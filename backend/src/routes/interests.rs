@@ -1,11 +1,10 @@
 use actix_web::{
-    get, patch,
-    web::{Data, Json, Path, ServiceConfig},
+    get,
+    web::{Data, Json, ServiceConfig},
 };
 use sqlx::PgPool;
 
-use crate::models::interests::Interest;
-use crate::utils::{error::codestrands_error, Result};
+use crate::{models::interests::Interest, utils::Result};
 
 #[get("/interests/")]
 async fn get_interests(pool: Data<PgPool>) -> Result<Json<Vec<Interest>>> {

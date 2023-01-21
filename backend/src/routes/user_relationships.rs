@@ -73,5 +73,8 @@ async fn reject_user(
 }
 
 pub fn config(config: &mut ServiceConfig) {
-    config.service(get_relationship_with_user);
+    config
+        .service(get_relationship_with_user)
+        .service(like_user)
+        .service(reject_user);
 }

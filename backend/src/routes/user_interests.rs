@@ -3,26 +3,12 @@ use actix_web::{
     web::{Data, Json, Path, ServiceConfig},
     HttpResponse,
 };
-use serde::Deserialize;
 use sqlx::PgPool;
 
-use crate::models::interests::Interest;
 use crate::models::user_interests::UserInterest;
 use crate::{
-    models::auth::codestrands,
-    utils::{auth::UserSession, error::codestrands_error, Result},
+    utils::{auth::UserSession, Result},
 };
-
-#[derive(Deserialize)]
-struct UserIdPath {
-    user_id: i32,
-}
-
-#[derive(Deserialize)]
-struct PutDeleteUserInterest {
-    user_id: Option<i32>,
-    interest_id: Option<i32>,
-}
 
 #[get("/users/@me/interests/")]
 async fn get_me_interests(
@@ -34,30 +20,30 @@ async fn get_me_interests(
 
 #[get("/users/{user_id}/interests/")]
 async fn get_user_interests(
-    path: Path<UserIdPath>,
+    path: Path<i32>,
     pool: Data<PgPool>,
 ) -> Result<Json<Vec<UserInterest>>> {
-    Ok(Json(UserInterest::get(path.user_id, &pool).await?))
+    Ok(Json(UserInterest::get(path.into_inner(), &pool).await?))
 }
 
-#[put("/users/@me/interests/")]
+#[put("/users/@me/interests/{interest_id}/")]
 async fn put_me_interest(
-    user_interest: Json<UserInterest>,
+    path: Path<i32>,
     session: UserSession,
     pool: Data<PgPool>,
 ) -> Result<Json<UserInterest>> {
     Ok(Json(
-        UserInterest::create(session.user_id, user_interest.interest_id, &pool).await?,
+        UserInterest::create(session.user_id, path.into_inner(), &pool).await?,
     ))
 }
 
-#[delete("/users/@me/interests/")]
+#[delete("/users/@me/interests/{interest_id}/")]
 async fn delete_me_interest(
-    user_interest: Json<UserInterest>,
+    path: Path<i32>,
     session: UserSession,
     pool: Data<PgPool>,
 ) -> Result<HttpResponse> {
-    UserInterest::delete(session.user_id, user_interest.interest_id, &pool).await?;
+    UserInterest::delete(session.user_id, path.into_inner(), &pool).await?;
     Ok(HttpResponse::Ok().finish())
 }
 

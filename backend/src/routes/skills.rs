@@ -4,7 +4,7 @@ use actix_web::{
 };
 use sqlx::PgPool;
 
-use crate::utils::Result;
+use crate::{models::skills::Skill, utils::Result};
 
 #[get("/skills/")]
 async fn get_skills(pool: Data<PgPool>) -> Result<Json<Vec<Skill>>> {
