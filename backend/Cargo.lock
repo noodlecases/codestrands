@@ -416,6 +416,7 @@ dependencies = [
  "env_logger",
  "futures",
  "log",
+ "openssl",
  "paste",
  "redis",
  "reqwest",
@@ -424,6 +425,7 @@ dependencies = [
  "sqlx",
  "strum",
  "strum_macros",
+ "url",
  "uuid",
  "validator",
 ]

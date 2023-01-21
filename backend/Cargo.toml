@@ -17,6 +17,7 @@ env_logger = "0.9.0"
 dotenv = "0.15.0"
 futures = "0.3"
 log = "0.4"
+openssl = "0.10"
 paste = "1.0.6"
 redis = { version = "0.21.5", features = ["tokio-comp"] }
 reqwest = { version = "0.11", features = ["json", "multipart", "rustls-tls"] }
@@ -25,5 +26,6 @@ serde_json = "1.0"
 strum = "0.24"
 strum_macros = "0.24"
 sqlx = { version = "0.5", features = ["chrono", "migrate", "postgres", "runtime-actix-rustls"] }
+url = "2.2.2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 validator = { version = "0.12", features = ["derive"] }
