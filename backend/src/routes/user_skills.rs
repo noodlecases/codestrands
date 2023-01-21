@@ -7,11 +7,11 @@ use serde::Deserialize;
 use sqlx::PgPool;
 
 use crate::models::user_skills::UserSkill;
-use crate::utils::{auth::UserSession, error::codestrands_error, Result};
+use crate::utils::{auth::UserSession, Result};
 
 #[derive(Deserialize)]
-struct UserPath {
-    username: String,
+struct UserIdPath {
+    user_id: i32,
 }
 
 #[derive(Deserialize)]
@@ -25,11 +25,12 @@ async fn get_me_skills(session: UserSession, pool: Data<PgPool>) -> Result<Json<
     Ok(Json(UserSkill::get(session.user_id, &pool).await?))
 }
 
-#[get("/users/{username}/skills/")]
-async fn get_user_skills(path: Path<UserPath>, pool: Data<PgPool>) -> Result<Json<Vec<UserSkill>>> {
-    Ok(Json(
-        UserSkill::get_by_username(&path.username, &pool).await?,
-    ))
+#[get("/users/{user_id}/skills/")]
+async fn get_user_skills(
+    path: Path<UserIdPath>,
+    pool: Data<PgPool>,
+) -> Result<Json<Vec<UserSkill>>> {
+    Ok(Json(UserSkill::get(path.user_id, &pool).await?))
 }
 
 #[put("/users/@me/skills/")]

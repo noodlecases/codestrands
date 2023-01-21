@@ -14,8 +14,8 @@ use crate::{
 };
 
 #[derive(Deserialize)]
-struct UserPath {
-    username: String,
+struct UserIdPath {
+    user_id: i32,
 }
 
 #[derive(Deserialize)]
@@ -32,14 +32,12 @@ async fn get_me_interests(
     Ok(Json(UserInterest::get(session.user_id, &pool).await?))
 }
 
-#[get("/users/{username}/interests/")]
+#[get("/users/{user_id}/interests/")]
 async fn get_user_interests(
-    path: Path<UserPath>,
+    path: Path<UserIdPath>,
     pool: Data<PgPool>,
 ) -> Result<Json<Vec<UserInterest>>> {
-    Ok(Json(
-        UserInterest::get_by_username(&path.username, &pool).await?,
-    ))
+    Ok(Json(UserInterest::get(path.user_id, &pool).await?))
 }
 
 #[put("/users/@me/interests/")]
