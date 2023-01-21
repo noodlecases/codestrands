@@ -39,6 +39,27 @@ pub struct SocialLink {
 impl SocialLink {
     update_social_link!(name: &str, url: &str);
 
+    pub async fn create(name: &str, url: &str, user_id: i32, pool: &PgPool) -> Result<Self> {
+        Ok(
+            sqlx::query_as::<_, Self>(
+                "
+                    INSERT INTO social_links (
+                        user_id,
+                        name,
+                        url
+                    )
+                    VALUES ($1, $2, $3)
+                    RETURNING *
+                "
+            )
+            .bind(name)
+            .bind(url)
+            .bind(user_id)
+            .fetch_one(pool)
+            .await?
+        )
+    }
+
     pub async fn get(user_id: i32, pool: &PgPool) -> Result<Vec<Self>> {
         Ok(
             sqlx::query_as::<_, Self>("SELECT * FROM social_links WHERE user_id = $1")
