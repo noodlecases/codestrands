@@ -8,15 +8,16 @@ use crate::utils::Result;
 macro_rules! update_social_link {
     ($($field:ident: $type:ty),+) => {
         paste! {$(
-            pub async fn [< update_ $field >](id: i32, $field: $type, pool: &PgPool) -> Result<Self> {
+            pub async fn [< update_ $field >](id: i32, user_id: i32, $field: $type, pool: &PgPool) -> Result<Self> {
                 Ok(
                     sqlx::query_as::<_, Self>(concat!(
                         "UPDATE social_links SET ",
                         stringify!($field),
-                        " = $1 WHERE id = $2 RETURNING *"
+                        " = $1 WHERE id = $2 and user_id = $3 RETURNING *"
                     ))
                     .bind($field)
                     .bind(id)
+                    .bind(user_id)
                     .fetch_one(pool)
                     .await?,
                 )
@@ -67,9 +68,10 @@ impl SocialLink {
         )
     }
 
-    pub async fn delete(id: i32, pool: &PgPool) -> Result<()> {
-        sqlx::query("DELETE FROM social_links WHERE id = $1")
+    pub async fn delete(id: i32, user_id: i32, pool: &PgPool) -> Result<()> {
+        sqlx::query("DELETE FROM social_links WHERE id = $1 AND user_id = $2")
             .bind(id)
+            .bind(user_id)
             .execute(pool)
             .await?;
 
