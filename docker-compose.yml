@@ -25,7 +25,7 @@ services:
       REDIS_URL: redis://:codestrands@redis:6379
       DEBUG: "true"
       SECRET_KEY: yaVjiPmcBWeMffDk5jhkLVwLMuQnAe6fCdK5a9jd6v9Ysc3boZnMeAp7AmXV5hnk
-      OAUTH_REDIRECT_URI: http://localhost:8000/callback
+      OAUTH_REDIRECT_URI: http://codestrands.local:8000/auth/callback/keycloak
       OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
       OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET}
       OAUTH_URL: ${OAUTH_URL}
