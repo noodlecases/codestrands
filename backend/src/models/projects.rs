@@ -29,6 +29,7 @@ macro_rules! update_project {
                     ))
                     .bind($field)
                     .bind(id)
+                    .bind(user_id)
                     .fetch_one(pool)
                     .await?,
                 )
