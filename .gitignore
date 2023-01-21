@@ -11,3 +11,6 @@ redis_data/
 
 # Environment variables
 .env
+
+# Mackers
+.DS_Store
