@@ -15,7 +15,7 @@ const KEYCLOAK_USER_URL: &str =
 
 #[derive(Deserialize)]
 pub struct User {
-    pub uid: String,
+    pub sub: String,
     pub email: String,
     pub name: String,
     pub given_name: String,
@@ -23,7 +23,7 @@ pub struct User {
     pub preferred_username: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct TokenResponse {
     pub access_token: String,
     #[serde(deserialize_with = "duration_from_secs")]
@@ -69,7 +69,7 @@ impl User {
         codestrands::Account::upsert(
             user.id,
             "KEYCLOAK",
-            &keycloak_user.uid,
+            &keycloak_user.sub,
             &token_res.refresh_token,
             &token_res.access_token,
             Utc::now() + token_res.expires_in,
@@ -144,7 +144,7 @@ impl User {
                 "grant_type": "authorization_code",
                 "code": code,
                 "redirect_uri": format!("{}/keycloak", oauth_redirect_uri),
-                "scope": "id identify email",
+                "scope": "openid id",
             }))
             .send()
             .await?

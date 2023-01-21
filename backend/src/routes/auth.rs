@@ -76,7 +76,6 @@ async fn callback_keycloak(
                 .unwrap_or("failed to login with keycloak")
         ),
     };
-
     session.insert("user_id", user.id)?;
     session.insert("authenticated", true)?;
     Ok(Json(
