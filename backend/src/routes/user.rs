@@ -20,7 +20,6 @@ struct PatchedUser {
     first_name: Option<String>,
     last_name: Option<String>,
     bio: Option<Option<String>>,
-    username: Option<String>,
 }
 
 #[get("/users/@me/")]
@@ -50,17 +49,16 @@ async fn patch_me(
 ) -> Result<Json<codestrands::User>> {
     let mut latest = None;
 
-    if let Some(name) = &user.first_name {
-        latest = Some(codestrands::User::update_first_name(session.user_id, name, &pool).await?);
+    if let Some(first_name) = &user.first_name {
+        latest =
+            Some(codestrands::User::update_first_name(session.user_id, first_name, &pool).await?);
     }
-    if let Some(name) = &user.last_name {
-        latest = Some(codestrands::User::update_last_name(session.user_id, name, &pool).await?);
+    if let Some(last_name) = &user.last_name {
+        latest =
+            Some(codestrands::User::update_last_name(session.user_id, last_name, &pool).await?);
     }
     if let Some(bio) = &user.bio {
         latest = Some(codestrands::User::update_bio(session.user_id, bio.clone(), &pool).await?);
-    }
-    if let Some(username) = &user.username {
-        latest = Some(codestrands::User::update_username(session.user_id, username, &pool).await?);
     }
 
     match latest {

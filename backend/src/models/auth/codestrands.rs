@@ -72,12 +72,7 @@ macro_rules! update_user {
 
 impl User {
     get_user_by!(id: i32, email: &str, username: &str);
-    update_user!(
-        first_name: &str,
-        last_name: &str,
-        bio: Option<String>,
-        username: &str
-    );
+    update_user!(first_name: &str, last_name: &str, bio: Option<String>);
 
     pub async fn insert(
         first_name: &str,
