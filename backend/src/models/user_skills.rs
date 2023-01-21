@@ -41,6 +41,20 @@ impl UserSkill {
         )
     }
 
+    pub async fn get_by_username(username: &str, pool: &PgPool) -> Result<Vec<Self>> {
+        Ok(sqlx::query_as::<_, Self>(
+            "
+                        SELECT *
+                        FROM user_skills
+                            JOIN users ON user_skills.user_id = users.id
+                        WHERE users.username = $1
+                     ",
+        )
+        .bind(username)
+        .fetch_all(pool)
+        .await?)
+    }
+
     pub async fn delete(user_id: i32, skill_id: i32, pool: &PgPool) -> Result<()> {
         sqlx::query("DELETE FROM user_skills WHERE user_id = $1 AND skill_id = $2")
             .bind(user_id)
