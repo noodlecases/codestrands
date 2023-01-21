@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod chrono;
 pub mod error;
 
