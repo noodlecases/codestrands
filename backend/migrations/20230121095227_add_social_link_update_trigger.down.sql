@@ -1,0 +1,1 @@
+DROP TRIGGER update_social_link_updated_at ON social_links;

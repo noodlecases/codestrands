@@ -1,0 +1,1 @@
+DROP TRIGGER update_user_relationship_updated_at ON user_relationships;
