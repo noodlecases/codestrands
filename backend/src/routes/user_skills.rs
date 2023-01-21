@@ -3,22 +3,10 @@ use actix_web::{
     web::{Data, Json, Path, ServiceConfig},
     HttpResponse,
 };
-use serde::Deserialize;
 use sqlx::PgPool;
 
 use crate::models::user_skills::UserSkill;
 use crate::utils::{auth::UserSession, Result};
-
-#[derive(Deserialize)]
-struct UserIdPath {
-    user_id: i32,
-}
-
-#[derive(Deserialize)]
-struct PutDeleteUserSkill {
-    user_id: Option<i32>,
-    skill_id: Option<i32>,
-}
 
 #[get("/users/@me/skills/")]
 async fn get_me_skills(session: UserSession, pool: Data<PgPool>) -> Result<Json<Vec<UserSkill>>> {
@@ -27,30 +15,30 @@ async fn get_me_skills(session: UserSession, pool: Data<PgPool>) -> Result<Json<
 
 #[get("/users/{user_id}/skills/")]
 async fn get_user_skills(
-    path: Path<UserIdPath>,
+    path: Path<i32>,
     pool: Data<PgPool>,
 ) -> Result<Json<Vec<UserSkill>>> {
-    Ok(Json(UserSkill::get(path.user_id, &pool).await?))
+    Ok(Json(UserSkill::get(path.into_inner(), &pool).await?))
 }
 
-#[put("/users/@me/skills/")]
+#[put("/users/@me/skills/{skill_id}/")]
 async fn put_me_skills(
-    user_skill: Json<UserSkill>,
+    path: Path<i32>,
     session: UserSession,
     pool: Data<PgPool>,
 ) -> Result<Json<UserSkill>> {
     Ok(Json(
-        UserSkill::create(session.user_id, user_skill.skill_id, &pool).await?,
+        UserSkill::create(session.user_id, path.into_inner(), &pool).await?,
     ))
 }
 
-#[delete("/users/@me/skills/")]
+#[delete("/users/@me/skills/{skill_id}/")]
 async fn delete_me_skills(
-    user_skill: Json<UserSkill>,
+    path: Path<i32>,
     session: UserSession,
     pool: Data<PgPool>,
 ) -> Result<HttpResponse> {
-    UserSkill::delete(session.user_id, user_skill.skill_id, &pool).await?;
+    UserSkill::delete(session.user_id, path.into_inner(), &pool).await?;
     Ok(HttpResponse::Ok().finish())
 }
 
