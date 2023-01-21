@@ -2,6 +2,8 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import SwipeCard from '../components/SwipeCard'
 
+const user = {username: "Aaron", bio: "test", topSkills: ["skill1", "skill2", "skill3"], skills: ["skill", "skill", "skill", "skill"]};
+
 const swipe = () => {
   return (
     <div className = "flex justify-center">
@@ -9,10 +11,12 @@ const swipe = () => {
           <Navbar />
         </div>
         <div className = "h-screen w-[50%] border-base-content border-x-2">
-          <div className="stack animate-fade-in-down">
-            <SwipeCard />
-            <SwipeCard />
-            <SwipeCard />
+          <div className='flex justify-center'>
+            <div className="stack animate-fade-in-down">
+              <SwipeCard {...user}/>
+              <SwipeCard {...user}/>
+              <SwipeCard {...user}/>
+            </div>
           </div>
           <div className='flex justify-center items-center p-4'>
             <button className="btn btn-circle w-20 h-20 m-2 bg-base-100 hover:bg-base-200">
