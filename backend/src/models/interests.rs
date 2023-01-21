@@ -14,27 +14,23 @@ pub struct Interest {
 
 impl Interest {
     pub async fn all(pool: &PgPool) -> Result<Vec<Self>> {
-        Ok(
-            sqlx::query_as::<_, Self>("SELECT * FROM interests")
-                .fetch_all(pool)
-                .await?
-        )
+        Ok(sqlx::query_as::<_, Self>("SELECT * FROM interests")
+            .fetch_all(pool)
+            .await?)
     }
 
     pub async fn create(name: &str, pool: &PgPool) -> Result<Self> {
-        Ok(
-            sqlx::query_as::<_, Self>(
-                "
+        Ok(sqlx::query_as::<_, Self>(
+            "
                     INSERT INTO interests (name)
                     VALUES ($1)
                     ON CONFLICT (name) DO NOTHING
                     RETURNING *
-                "
-            )
-            .bind(name)
-            .fetch_one(pool)
-            .await?
+                ",
         )
+        .bind(name)
+        .fetch_one(pool)
+        .await?)
     }
 
     pub async fn delete(id: i32, pool: &PgPool) -> Result<()> {

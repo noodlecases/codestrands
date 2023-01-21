@@ -8,8 +8,10 @@ use crate::{
     utils::{chrono::duration_from_secs, Result},
 };
 
-const KEYCLOAK_TOKEN_URL: &str = "https://id.noodlecases.tech/realms/dev/protocol/openid-connect/token";
-const KEYCLOAK_USER_URL: &str = "https://id.noodlecases.tech/realms/dev/protocol/openid-connect/userinfo";
+const KEYCLOAK_TOKEN_URL: &str =
+    "https://id.noodlecases.tech/realms/dev/protocol/openid-connect/token";
+const KEYCLOAK_USER_URL: &str =
+    "https://id.noodlecases.tech/realms/dev/protocol/openid-connect/userinfo";
 
 #[derive(Deserialize)]
 pub struct User {

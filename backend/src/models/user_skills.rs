@@ -15,22 +15,20 @@ pub struct UserSkill {
 
 impl UserSkill {
     pub async fn create(user_id: i32, skill_id: i32, pool: &PgPool) -> Result<Self> {
-        Ok(
-            sqlx::query_as::<_, Self>(
-                "
+        Ok(sqlx::query_as::<_, Self>(
+            "
                     INSERT INTO user_skills (
                         user_id,
                         skill_id
                     )
                     VALUES ($1, $2)
                     RETURNING *
-                "
-            )
-            .bind(user_id)
-            .bind(skill_id)
-            .fetch_one(pool)
-            .await?
+                ",
         )
+        .bind(user_id)
+        .bind(skill_id)
+        .fetch_one(pool)
+        .await?)
     }
 
     pub async fn get(user_id: i32, pool: &PgPool) -> Result<Vec<Self>> {
@@ -38,7 +36,7 @@ impl UserSkill {
             sqlx::query_as::<_, Self>("SELECT * FROM user_skills WHERE user_id = $1")
                 .bind(user_id)
                 .fetch_all(pool)
-                .await?
+                .await?,
         )
     }
 
