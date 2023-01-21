@@ -12,6 +12,7 @@ const SwipeCard = (user: {username: string, bio: string, topSkills: Array<string
             </div>
         </div>
 
+        <div className="pl-4 pt-4 text-xl text-primary-content font-semibold">Top Skills</div>
         <div className="flex justify-start py-4">
             {user.topSkills.map((skill: string) =>
                 <div className="badge badge-primary p-4 m-2">{skill}</div>
