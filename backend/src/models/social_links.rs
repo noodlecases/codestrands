@@ -47,4 +47,13 @@ impl SocialLink {
                 .await?
         )
     }
+
+    pub async fn delete(id: i32, pool: &PgPool) -> Result<()> {
+        sqlx::query("DELETE FROM social_links WHERE id = $1")
+            .bind(id)
+            .execute(pool)
+            .await?;
+
+        Ok(())
+    }
 }
