@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
+use paste::paste;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, PgPool};
-use paste::paste;
 
 use crate::utils::Result;
 
@@ -40,10 +40,16 @@ macro_rules! update_project {
 impl Project {
     update_project!(name: String, description: String, url: String);
 
-    pub async fn create(user_id: i32, name: String, description: String, url: String, image: String, pool: &PgPool) -> Result<Self> {
-        Ok(
-            sqlx::query_as::<_, Self>(
-                "
+    pub async fn create(
+        user_id: i32,
+        name: String,
+        description: String,
+        url: String,
+        image: String,
+        pool: &PgPool,
+    ) -> Result<Self> {
+        Ok(sqlx::query_as::<_, Self>(
+            "
                     INSERT INTO projects (
                         user_id,
                         name,
@@ -53,16 +59,15 @@ impl Project {
                     )
                     VALUES ($1, $2, $3, $4, $5)
                     RETURNING *
-                "
-            )
-                .bind(user_id)
-                .bind(name)
-                .bind(description)
-                .bind(url)
-                .bind(image)
-                .fetch_one(pool)
-                .await?
+                ",
         )
+        .bind(user_id)
+        .bind(name)
+        .bind(description)
+        .bind(url)
+        .bind(image)
+        .fetch_one(pool)
+        .await?)
     }
 
     pub async fn get(id: i32, pool: &PgPool) -> Result<Vec<Self>> {
@@ -70,16 +75,14 @@ impl Project {
             sqlx::query_as::<_, Self>("SELECT * FROM projects WHERE id = $1")
                 .bind(id)
                 .fetch_all(pool)
-                .await?
+                .await?,
         )
     }
 
     pub async fn all(pool: &PgPool) -> Result<Vec<Self>> {
-        Ok(
-            sqlx::query_as::<_, Self>("SELECT * FROM projects")
-                .fetch_all(pool)
-                .await?
-        )
+        Ok(sqlx::query_as::<_, Self>("SELECT * FROM projects")
+            .fetch_all(pool)
+            .await?)
     }
 
     pub async fn delete(id: i32, pool: &PgPool) -> Result<()> {
