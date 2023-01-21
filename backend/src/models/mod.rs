@@ -1,6 +1,6 @@
 pub mod auth;
-pub mod chats;
 pub mod chat_users;
+pub mod chats;
 pub mod interests;
 pub mod projects;
 pub mod skills;
