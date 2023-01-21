@@ -13,7 +13,7 @@ pub struct Project {
     pub name: String,
     pub description: String,
     pub url: String,
-    pub image: String,
+    pub image: Option<String>,
     pub created_at: DateTime<Utc>,
 }
 
@@ -46,7 +46,7 @@ impl Project {
         name: &str,
         description: &str,
         url: &str,
-        image: &str,
+        image: Option<String>,
         pool: &PgPool,
     ) -> Result<Self> {
         Ok(sqlx::query_as::<_, Self>(

@@ -1,13 +1,12 @@
 use actix_web::{
-    delete, get, patch, put,
-    web::{Data, Json, Path, ServiceConfig},
+    delete, get, put,
+    web::{Data, Json, Path},
 };
-use serde::Deserialize;
 use sqlx::PgPool;
 
 use crate::{
-    models::{chat_users::ChatUser, chats::Chat},
-    utils::{auth::UserSession, error::codestrands_error, Result},
+    models::{chat_users::ChatUser},
+    utils::{auth::UserSession, Result},
 };
 
 #[put("/chats/{chat_id}/users/")]

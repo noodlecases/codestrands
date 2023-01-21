@@ -15,7 +15,7 @@ struct NewProjectData {
     name: String,
     description: String,
     url: String,
-    image: String,
+    image: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -48,7 +48,7 @@ async fn create_project(
             &project.name,
             &project.description,
             &project.url,
-            &project.image,
+            project.image.clone(),
             &pool,
         )
         .await?,
