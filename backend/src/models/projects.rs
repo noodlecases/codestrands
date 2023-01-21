@@ -20,12 +20,12 @@ pub struct Project {
 macro_rules! update_project {
     ($($field:ident: $type:ty),+) => {
         paste! {$(
-            pub async fn [< update_ $field >](id: i32, $field: $type, pool: &PgPool) -> Result<Self> {
+            pub async fn [< update_ $field >](user_id: i32, id: i32, $field: $type, pool: &PgPool) -> Result<Self> {
                 Ok(
                     sqlx::query_as::<_, Self>(concat!(
                         "UPDATE projects SET ",
                         stringify!($field),
-                        " = $1 WHERE id = $2 RETURNING *"
+                        " = $1 WHERE id = $2 and user_id = $3 RETURNING *"
                     ))
                     .bind($field)
                     .bind(id)
@@ -38,7 +38,7 @@ macro_rules! update_project {
 }
 
 impl Project {
-    update_project!(name: String, description: String, url: String);
+    update_project!(name: &str, description: &str, url: &str, image: &str);
 
     pub async fn create(
         user_id: i32,
@@ -94,9 +94,10 @@ impl Project {
             .await?)
     }
 
-    pub async fn delete(id: i32, pool: &PgPool) -> Result<()> {
-        sqlx::query("DELETE FROM user_relationships WHERE id = $1")
+    pub async fn delete(user_id: i32, id: i32, pool: &PgPool) -> Result<()> {
+        sqlx::query("DELETE FROM user_relationships WHERE id = $1 AND user_id = $2")
             .bind(id)
+            .bind(user_id)
             .execute(pool)
             .await?;
 

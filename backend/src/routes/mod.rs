@@ -2,9 +2,9 @@ use actix_web::web::ServiceConfig;
 
 mod auth;
 mod interests;
+mod projects;
 mod skills;
 mod social_links;
-mod projects;
 mod user;
 mod user_interests;
 mod user_relationships;
@@ -14,6 +14,7 @@ pub fn config(config: &mut ServiceConfig) {
     config
         .configure(auth::config)
         .configure(interests::config)
+        .configure(projects::config)
         .configure(skills::config)
         .configure(social_links::config)
         .configure(user::config)

@@ -6,9 +6,7 @@ use actix_web::{
 use sqlx::PgPool;
 
 use crate::models::user_interests::UserInterest;
-use crate::{
-    utils::{auth::UserSession, Result},
-};
+use crate::utils::{auth::UserSession, Result};
 
 #[get("/users/@me/interests/")]
 async fn get_me_interests(

@@ -14,10 +14,7 @@ async fn get_me_skills(session: UserSession, pool: Data<PgPool>) -> Result<Json<
 }
 
 #[get("/users/{user_id}/skills/")]
-async fn get_user_skills(
-    path: Path<i32>,
-    pool: Data<PgPool>,
-) -> Result<Json<Vec<UserSkill>>> {
+async fn get_user_skills(path: Path<i32>, pool: Data<PgPool>) -> Result<Json<Vec<UserSkill>>> {
     Ok(Json(UserSkill::get(path.into_inner(), &pool).await?))
 }
 
