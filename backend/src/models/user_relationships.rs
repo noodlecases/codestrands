@@ -11,13 +11,13 @@ pub struct UserRelationship {
     pub user1_id: i32,
     pub user2_id: i32,
     #[sqlx(rename = "type")]
-    pub rel_type: UserRelationshipType,
+    pub rel_type: i32,
     pub created_at: DateTime<Utc>,
 }
 
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-enum UserRelationshipType {
+pub enum UserRelationshipType {
     Rejected = 0,
     Matched = 1,
     UserOneInitiated = 2,
@@ -44,7 +44,7 @@ impl UserRelationship {
         )
         .bind(user1_id)
         .bind(user2_id)
-        .bind(rel_type)
+        .bind(rel_type as i32)
         .fetch_one(pool)
         .await?)
     }
