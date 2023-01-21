@@ -9,7 +9,7 @@ use crate::utils::Result;
 pub struct ChatUser {
     pub id: i32,
     pub user_id: i32,
-    pub skill_id: i32,
+    pub chat_id: i32,
     pub created_at: DateTime<Utc>,
 }
 

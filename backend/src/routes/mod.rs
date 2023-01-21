@@ -1,6 +1,8 @@
 use actix_web::web::ServiceConfig;
 
 mod auth;
+mod chat_users;
+mod chats;
 mod interests;
 mod projects;
 mod skills;
