@@ -42,10 +42,10 @@ impl Project {
 
     pub async fn create(
         user_id: i32,
-        name: String,
-        description: String,
-        url: String,
-        image: String,
+        name: &str,
+        description: &str,
+        url: &str,
+        image: &str,
         pool: &PgPool,
     ) -> Result<Self> {
         Ok(sqlx::query_as::<_, Self>(
