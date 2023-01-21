@@ -31,6 +31,11 @@ async fn get_user_projects(path: Path<i32>, pool: Data<PgPool>) -> Result<Json<V
     Ok(Json(Project::get_by_user(path.into_inner(), &pool).await?))
 }
 
+#[get("/users/@me/projects/")]
+async fn get_me_projects(session: UserSession, pool: Data<PgPool>) -> Result<Json<Vec<Project>>> {
+    Ok(Json(Project::get_by_user(session.user_id, &pool).await?))
+}
+
 #[post("/users/@me/projects/")]
 async fn create_project(
     session: UserSession,
