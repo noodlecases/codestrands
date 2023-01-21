@@ -68,6 +68,7 @@ async fn main() -> Result<()> {
                     .allowed_origin("http://localhost:3000")
                     .allowed_origin("http://127.0.0.1:8000")
                     .allowed_origin("http://localhost:8000")
+                    .allowed_origin("http://codestrands.local:8000")
                     .allow_any_header()
                     .allow_any_method()
                     .supports_credentials()

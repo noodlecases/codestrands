@@ -10,7 +10,7 @@ services:
     expose:
       - 3000
     volumes:
-      - ./frontend/:/frontend/
+      - ./frontend/:/codestrands/
 
   backend:
     build:
@@ -25,7 +25,7 @@ services:
       REDIS_URL: redis://:codestrands@redis:6379
       DEBUG: "true"
       SECRET_KEY: yaVjiPmcBWeMffDk5jhkLVwLMuQnAe6fCdK5a9jd6v9Ysc3boZnMeAp7AmXV5hnk
-      OAUTH_REDIRECT_URI: http://codestrands.local:8000/auth/callback/keycloak
+      OAUTH_REDIRECT_URI: http://codestrands.local:8000/auth/callback
       OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
       OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET}
       OAUTH_URL: ${OAUTH_URL}
@@ -74,7 +74,7 @@ services:
     image: nginx:1.21
     depends_on:
       - backend
-      # - frontend
+      - frontend
       - minio
     ports:
       - 8000:80

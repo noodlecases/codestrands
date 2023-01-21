@@ -1,3 +1,4 @@
+use crate::models::skills::Skill;
 use actix_web::{
     get,
     web::{Data, Json, ServiceConfig},
