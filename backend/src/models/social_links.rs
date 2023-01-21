@@ -1,0 +1,50 @@
+use chrono::{DateTime, Utc};
+use paste::paste;
+use serde::{Deserialize, Serialize};
+use sqlx::{FromRow, PgPool};
+
+use crate::utils::Result;
+
+macro_rules! update_social_link {
+    ($($field:ident: $type:ty),+) => {
+        paste! {$(
+            pub async fn [< update_ $field >](id: i32, $field: $type, pool: &PgPool) -> Result<Self> {
+                Ok(
+                    sqlx::query_as::<_, Self>(concat!(
+                        "UPDATE social_links SET ",
+                        stringify!($field),
+                        " = $1 WHERE id = $2 RETURNING *"
+                    ))
+                    .bind($field)
+                    .bind(id)
+                    .fetch_one(pool)
+                    .await?,
+                )
+            }
+        )+}
+    };
+}
+
+#[derive(Clone, Deserialize, FromRow, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SocialLink {
+    pub id: i32,
+    pub user_id: i32,
+    pub name: String,
+    pub url: String,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+impl SocialLink {
+    update_social_link!(name: &str, url: &str);
+
+    pub async fn get(user_id: i32, pool: &PgPool) -> Result<Vec<Self>> {
+        Ok(
+            sqlx::query_as::<_, Self>("SELECT * FROM social_links WHERE user_id = $1")
+                .bind(user_id)
+                .fetch_all(pool)
+                .await?
+        )
+    }
+}
