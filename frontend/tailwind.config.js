@@ -8,19 +8,30 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
-        'fade-in-down': {
+        'yes-swipe': {
           '0%': {
-            opacity: '0',
-            transform: 'translateY(-10px)'
+            opacity: '1',
+            transform: 'translateX(0px) rotate(0deg)',
           },
           '100%': {
+            opacity: '0',
+            transform: 'translateX(100px) rotate(4deg)'
+          },
+        },
+        'no-swipe': {
+          '0%': {
             opacity: '1',
-            transform: 'translateY(0)'
+            transform: 'translateX(0px) rotate(0deg)',
+          },
+          '100%': {
+            opacity: '0',
+            transform: 'translateX(-100px) rotate(-4deg)'
           },
         }
       },
       animation: {
-        'fade-in-down': 'fade-in-down 0.5s ease-out'
+        'yes-swipe': 'yes-swipe 0.5s ease-out',
+        'no-swipe': 'no-swipe 0.5s ease-out'
       }
     },
   },

@@ -2,7 +2,15 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import ProjectCard from '../components/ProjectCard'
 
-const editProfile = () => {
+type UserProp = {
+    username: string, 
+    bio: string, 
+    topSkills: Array<string>,
+    interests: Array<string>,
+    skills: Array<string>
+}
+
+const editProfile = (props: UserProp) => {
   return (
     <div className = "flex justify-center">
         <div>
@@ -34,6 +42,14 @@ const editProfile = () => {
 
             <div className='px-8 pb-2'>
                 <div className="text-xl text-primary-content font-semibold pb-2">Skills</div>
+                
+                {/* {props.skills.map((skill: string) =>
+                    <div className="badge badge-info gap-2 mr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        {skill}
+                    </div>
+                )} */}
+                
                 <div className="badge badge-info gap-2 mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     info
@@ -63,10 +79,14 @@ const editProfile = () => {
 
             <div className='px-8 pb-2'>
                 <div className="text-xl text-primary-content font-semibold pb-2">Interests</div>
-                <div className="badge badge-info gap-2 mr-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    info
-                </div>
+                
+                {/* {props.interests.map((interest: string) =>
+                    <div className="badge badge-info gap-2 mr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        {interest}
+                    </div>
+                )} */}
+
                 <div className="badge badge-success gap-2 mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     success
