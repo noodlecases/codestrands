@@ -10,7 +10,7 @@ services:
     expose:
       - 3000
     volumes:
-      - ./frontend/:/frontend/
+      - ./frontend/:/codestrands/
 
   backend:
     build:
@@ -74,7 +74,7 @@ services:
     image: nginx:1.21
     depends_on:
       - backend
-      # - frontend
+      - frontend
       - minio
     ports:
       - 8000:80
