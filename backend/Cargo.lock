@@ -416,6 +416,7 @@ dependencies = [
  "env_logger",
  "futures",
  "log",
+ "paste",
  "redis",
  "reqwest",
  "serde",
