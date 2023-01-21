@@ -1,0 +1,10 @@
+# Visual Studio Code
+.vscode/
+
+# Service data folders
+minio_data/
+postgres_data/
+redis_data/
+
+# Environment variables
+.env
