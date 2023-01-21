@@ -1,4 +1,5 @@
 pub mod auth;
+pub mod chat_messages;
 pub mod chat_users;
 pub mod chats;
 pub mod interests;
