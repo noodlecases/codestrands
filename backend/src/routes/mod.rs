@@ -5,7 +5,6 @@ mod interests;
 mod skills;
 mod social_links;
 mod projects;
-mod projects;
 mod user;
 mod user_interests;
 mod user_skills;
