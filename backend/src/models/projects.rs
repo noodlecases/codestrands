@@ -70,10 +70,19 @@ impl Project {
         .await?)
     }
 
-    pub async fn get(id: i32, pool: &PgPool) -> Result<Vec<Self>> {
+    pub async fn get(id: i32, pool: &PgPool) -> Result<Self> {
         Ok(
             sqlx::query_as::<_, Self>("SELECT * FROM projects WHERE id = $1")
                 .bind(id)
+                .fetch_one(pool)
+                .await?,
+        )
+    }
+
+    pub async fn get_by_user(user_id: i32, pool: &PgPool) -> Result<Vec<Self>> {
+        Ok(
+            sqlx::query_as::<_, Self>("SELECT * FROM projects WHERE user_id = $1")
+                .bind(user_id)
                 .fetch_all(pool)
                 .await?,
         )
