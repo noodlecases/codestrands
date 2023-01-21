@@ -22,6 +22,7 @@ impl UserSkill {
                         skill_id
                     )
                     VALUES ($1, $2)
+                    ON CONFLICT (user_id, skill_id) DO NOTHING
                     RETURNING *
                 ",
         )
