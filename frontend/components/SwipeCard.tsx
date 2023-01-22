@@ -20,7 +20,7 @@ const SwipeCard = (props: UserProp) => {
         </div>
 
         <div className="pl-4 pt-4 text-xl text-primary-content font-semibold">Top Skills</div>
-        <div className="flex justify-start py-4">
+        <div className="justify-start py-4">
             {props.topSkills.map((skill: string) =>
                 <div className="badge badge-primary p-4 m-2">{skill}</div>
             )}
@@ -34,7 +34,7 @@ const SwipeCard = (props: UserProp) => {
         </div>
         <div className="p-4">
             <div className="text-xl text-primary-content font-semibold">Other Skills</div>
-            <div className="flex justify-start py-2">
+            <div className="justify-start py-2">
                 {props.skills.map((skill: string) =>
                     <div className="badge badge-outline m-0.5">{skill}</div>
                 )}
