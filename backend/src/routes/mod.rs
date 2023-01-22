@@ -15,6 +15,7 @@ mod user_skills;
 pub fn config(config: &mut ServiceConfig) {
     config
         .configure(auth::config)
+        .configure(chats::config)
         .configure(interests::config)
         .configure(projects::config)
         .configure(skills::config)

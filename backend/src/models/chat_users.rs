@@ -32,6 +32,16 @@ impl ChatUser {
         .await?)
     }
 
+    pub async fn get(user_id: i32, chat_id: i32, pool: &PgPool) -> Result<Self> {
+        Ok(
+            sqlx::query_as::<_, Self>("SELECT * FROM chat_users WHERE user_id = $1 AND chat_id = $2")
+                .bind(user_id)
+                .bind(chat_id)
+                .fetch_one(pool)
+                .await?,
+        )
+    }
+
     pub async fn get_by_user(user_id: i32, pool: &PgPool) -> Result<Vec<Self>> {
         Ok(
             sqlx::query_as::<_, Self>("SELECT * FROM chat_users WHERE user_id = $1")
