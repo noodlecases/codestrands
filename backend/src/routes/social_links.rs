@@ -33,6 +33,14 @@ async fn get_user_social_links(
     Ok(Json(SocialLink::get(path.into_inner(), &pool).await?))
 }
 
+#[get("/users/@me/social-links/")]
+async fn get_me_social_links(
+    session: UserSession,
+    pool: Data<PgPool>,
+) -> Result<Json<Vec<SocialLink>>> {
+    Ok(Json(SocialLink::get(session.user_id, &pool).await?))
+}
+
 #[post("/users/@me/social-links/")]
 async fn create_social_link(
     session: UserSession,
