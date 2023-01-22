@@ -11,7 +11,7 @@ import {
     apiGetUserSkillMe,
     apiGetUserInterestMe,
     apiGetUserProjectMe,
-    UserSkillResponse, UserInterestResponse, ProjectResponse
+    UserSkillResponse, UserInterestResponse, ProjectResponse, apiPatchUserMe
 } from "../api"
 import {InfinitySpin} from "react-loader-spinner";
 import {list} from "postcss";
@@ -63,11 +63,18 @@ const editProfile = (props: UserProp) => {
             <div className="h-full w-[50%] border-base-content border-x-2">
                 <div className="text-3xl p-8 text-primary-content font-semibold">Edit Profile</div>
                 {userResponse.createdAt > 0 ? <div className='px-8 pb-8'>
-                    <TextFieldForm fieldName={"First name"}
+                    <TextFieldForm fieldName={"First name"} callFunction={(d: string) => {apiPatchUserMe({
+                        firstName: d,
+                    })}}
                                    placeholder={userResponse.firstName}></TextFieldForm>
-                    <TextFieldForm fieldName={"Last name"} placeholder={userResponse.lastName}></TextFieldForm>
-
-                    <TextAreaForm fieldName={"Bio"} placeholder={userResponse.bio}></TextAreaForm>
+                    <TextFieldForm fieldName={"Last name"} callFunction={(d: string) => {apiPatchUserMe({
+                        lastName: d,
+                    })}}
+                                   placeholder={userResponse.lastName}></TextFieldForm>
+                    <TextAreaForm fieldName={"Bio"} callFunction={(d: string) => {apiPatchUserMe({
+                        bio: d,
+                    })}}
+                                  placeholder={userResponse.bio}></TextAreaForm>
                 </div> : <InfinitySpin width='200' color="#4fa94d"/>}
                 <div className='px-8 pb-8'>
                     {userSkillResponse.received ?

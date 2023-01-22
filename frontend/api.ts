@@ -33,7 +33,7 @@ export const loginRedirect = async (
     const oauthUrl = new URL(API_BASE_URL + "/auth/login/keycloak/");
 
     if (redirect) {
-        const state = btoa(JSON.stringify({ redirect }));
+        const state = btoa(JSON.stringify({redirect}));
         oauthUrl.searchParams.set("state", state);
     }
 
@@ -48,14 +48,14 @@ export async function keycloakCallback(
     const resp = await ApiClient.post(
         "auth/callback/keycloak/",
         {},
-        { params: { code, state } }
+        {params: {code, state}}
     );
     return resp.data.redirect;
 }
 
-////////////////////////////////////////////
-// Definitions for API routes begin here. //
-////////////////////////////////////////////
+////////////////////////////////////////////////
+// Definitions for API GET routes begin here. //
+////////////////////////////////////////////////
 
 export type UserResponse = {
     firstName: string;
@@ -145,4 +145,29 @@ export const apiGetUserProjectMe = async (): Promise<ProjectResponse[]> => {
             createdAt: Date.parse(x.createdAt),
         }
     });
+}
+
+//////////////////////////////////////////////////
+// Definitions for API PATCH routes begin here. //
+//////////////////////////////////////////////////
+type PatchUserRequest = {
+    firstName?: string;
+    lastName?: string;
+    bio?: string;
+}
+export const apiPatchUserMe = async (data: PatchUserRequest): Promise<UserResponse> => {
+    console.log(data)
+    const resp = await ApiClient.patch(
+        "users/@me/",
+        data
+    )
+    return {
+        firstName: resp.data.firstName,
+        lastName: resp.data.lastName,
+        username: resp.data.username,
+        bio: resp.data.bio,
+        image: resp.data.image,
+        createdAt: Date.parse(resp.data.createdAt),
+        updatedAt: Date.parse(resp.data.updatedAt),
+    };
 }
