@@ -11,12 +11,6 @@ use crate::{
 };
 
 #[derive(Deserialize)]
-#[serde(rename_all = "kebab-case")]
-struct UserPath {
-    username: String,
-}
-
-#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct PatchedUser {
     first_name: Option<String>,
@@ -31,13 +25,10 @@ async fn get_me(session: UserSession, pool: Data<PgPool>) -> Result<Json<codestr
     ))
 }
 
-#[get("/users/{username}/")]
-async fn get_user(
-    path: Path<UserPath>,
-    pool: Data<PgPool>,
-) -> Result<Json<codestrands::PublicUser>> {
+#[get("/users/{user_id}/")]
+async fn get_user(path: Path<i32>, pool: Data<PgPool>) -> Result<Json<codestrands::PublicUser>> {
     Ok(Json(
-        codestrands::User::get_by_username(&path.username, &pool)
+        codestrands::User::get_by_id(path.into_inner(), &pool)
             .await?
             .into_public(),
     ))
