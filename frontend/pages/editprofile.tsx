@@ -5,7 +5,7 @@ import TextFieldForm from "../components/forms/TextFieldForm";
 import TextAreaForm from "../components/forms/TextAreaForm";
 import BadgeForm from "../components/forms/BadgeForm";
 import BadgeListForm from "../components/forms/BadgeListForm";
-import {UserResponse, apiGetUserMe} from "../api"
+import {UserResponse, apiGetUserMe, apiGetUserSkillMe, apiGetUserInterestMe, apiGetUserProjectMe} from "../api"
 import {InfinitySpin} from "react-loader-spinner";
 
 type UserProp = {
@@ -17,19 +17,23 @@ type UserProp = {
 }
 
 const editProfile = (props: UserProp) => {
-    const [userResponse, setUserResponse] = useState({
-        firstName: "",
-        lastName: "",
-        username: "",
-        bio: "",
-        image: "",
-        createdAt: 0,
-        updatedAt: 0,
-    })
+    const [userResponse, setUserResponse] = useState({createdAt: 0})
+    const [userSkillResponse, setUserSkillResponse] = useState({createdAt: 0})
+    const [userInterestResponse, setUserInterestResponse] = useState({createdAt: 0})
+    const [userProjectResponse, setUserProjectResponse] = useState({createdAt: 0})
 
     useEffect(() => {
         apiGetUserMe().then((res) => {
             setUserResponse(res)
+        })
+        apiGetUserSkillMe().then((res) => {
+            setUserSkillResponse(res)
+        })
+        apiGetUserInterestMe().then((res) => {
+            setUserInterestResponse(res)
+        })
+        apiGetUserProjectMe().then((res) => {
+            setUserProjectResponse(res)
         })
     }, [])
 
@@ -45,7 +49,7 @@ const editProfile = (props: UserProp) => {
                     <TextFieldForm fieldName={"Last name"} placeholder={userResponse.lastName}></TextFieldForm>
 
                     <TextAreaForm fieldName={"Bio"} placeholder={userResponse.bio}></TextAreaForm>
-                </div> : <InfinitySpin width='200' color="#4fa94d" />}
+                </div> : <InfinitySpin width='200' color="#4fa94d"/>}
 
                 <div className='px-8 pb-8'>
                     <BadgeListForm name="Skills" badges={["info", "error"]}

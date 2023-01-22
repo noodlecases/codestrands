@@ -87,15 +87,17 @@ export type UserSkillResponse = {
     skillId: number,
     createdAt: number, // ms since epoch
 }
-export const apiGetUserSkillMe = async (): Promise<UserSkillResponse> => {
+export const apiGetUserSkillMe = async (): Promise<UserSkillResponse[]> => {
     const resp = await ApiClient.get(
         "users/@me/skills/",
     );
-    return {
-        id: resp.data.id,
-        userId: resp.data.userId,
-        skillId: resp.data.skillId,
-        createdAt: Date.parse(resp.data.createdAt)
+    return resp.data.map((x: any) => {
+        return {
+            id: x.data.id,
+            userId: x.data.userId,
+            skillId: x.data.skillId,
+            createdAt: Date.parse(x.data.createdAt)
+        }
     };
 }
 
@@ -105,14 +107,42 @@ export type UserInterestResponse = {
     interestId: number,
     createdAt: number,
 }
-export const apiGetUserInterestMe = async (): Promise<UserInterestResponse> => {
+export const apiGetUserInterestMe = async (): Promise<UserInterestResponse[]> => {
     const resp = await ApiClient.get(
         "users/@me/interests/",
     );
-    return {
-        id: resp.data.id,
-        userId: resp.data.userId,
-        interestId: resp.data.interestId,
-        createdAt: Date.parse(resp.data.createdAt)
+    return resp.data.map((x: any) => {
+        return {
+            id: x.data.id,
+            userId: x.data.userId,
+            interestId: x.data.interestId,
+            createdAt: Date.parse(x.data.createdAt)
+        }
     };
+}
+
+export type ProjectResponse = {
+    id: number,
+    userId: number,
+    name: string,
+    description: string,
+    url: string,
+    image: string | null,
+    createdAt: number, // ms since epoch
+}
+export const apiGetUserProjectMe = async (): Promise<ProjectResponse[]> => {
+    const resp = await ApiClient.get(
+        "users/@me/interests/",
+    );
+    return resp.data.map((x: any) => {
+        return {
+            id: x.id,
+            userId: x.userId,
+            name: x.name,
+            description: x.description,
+            url: x.url,
+            image: x.image,
+            createdAt: Date.parse(x.createdAt),
+        }
+    });
 }
