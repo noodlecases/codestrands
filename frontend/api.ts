@@ -1,4 +1,5 @@
 import axios from "axios";
+import {number} from "prop-types";
 
 export const API_BASE_URL = "/api/v1";
 
@@ -52,3 +53,48 @@ export async function keycloakCallback(
     return resp.data.redirect;
 }
 
+////////////////////////////////////////////
+// Definitions for API routes begin here. //
+////////////////////////////////////////////
+
+export type UserResponse = {
+    firstName: string;
+    lastName: string;
+    username: string;
+    bio: string;
+    image: string;
+    createdAt: number; // ms since epoch
+    updatedAt: number; // ms since epoch
+}
+export const api_get_user_me = async (): Promise<UserResponse> => {
+    const resp = await ApiClient.get(
+        "users/@me/",
+    );
+    return {
+        firstName: resp.data.firstName,
+        lastName: resp.data.lastName,
+        username: resp.data.username,
+        bio: resp.data.bio,
+        image: resp.data.image,
+        createdAt: Date.parse(resp.data.createdAt),
+        updatedAt: Date.parse(resp.data.updatedAt),
+    };
+}
+
+export type UserSkillResponse = {
+    id: number,
+    userId: number,
+    skillId: number,
+    createdAt: number, // ms since epoch
+}
+export const api_get_user_skill_me = async (): Promise<UserSkillResponse> => {
+    const resp = await ApiClient.get(
+        "users/@me/",
+    );
+    return {
+        id: resp.data.id,
+        userId: resp.data.userId,
+        skillId: resp.data.skillId,
+        createdAt: Date.parse(resp.data.createdAt)
+    };
+}

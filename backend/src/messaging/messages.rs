@@ -5,13 +5,12 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{messaging::status::Status, utils::error::CodestrandsError};
+use crate::utils::error::CodestrandsError;
 
 #[derive(Message)]
 #[rtype(result = "()")]
 pub struct WsMessage {
-    pub party_id: Uuid,
-    pub user_slug: String,
+    pub user_id: i32,
     pub ws_id: Uuid,
     pub event: IncomingWsEvent,
 }
@@ -20,7 +19,7 @@ pub struct WsMessage {
 #[rtype(result = "()")]
 #[serde(tag = "type", content = "payload", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum IncomingWsEvent {
-    Message { content: String },
+    Message { chat_id: i32, content: String },
 }
 
 impl FromStr for IncomingWsEvent {
@@ -35,14 +34,10 @@ impl FromStr for IncomingWsEvent {
 #[rtype(result = "()")]
 #[serde(tag = "type", content = "payload", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OutgoingWsEvent {
-    StatusUpdate {
-        user_slug: String,
-        timestamp: DateTime<Utc>,
-        status: Status,
-    },
     Message {
-        user_slug: String,
+        user_id: i32,
         timestamp: DateTime<Utc>,
+        chat_id: i32,
         content: String,
     },
 }
@@ -58,13 +53,12 @@ impl Display for OutgoingWsEvent {
 pub enum ActorEvent {
     Connect {
         address: Recipient<OutgoingWsEvent>,
-        party_id: Uuid,
-        user_slug: String,
+        user_id: i32,
+        user_chats: Vec<i32>,
         ws_id: Uuid,
     },
     Disconnect {
-        party_id: Uuid,
-        user_slug: String,
+        user_id: i32,
         ws_id: Uuid,
     },
 }

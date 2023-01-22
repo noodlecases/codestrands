@@ -18,18 +18,18 @@ const CLIENT_TIMEOUT: Duration = Duration::from_secs(15);
 
 pub struct WsConn {
     ws_id: Uuid,
-    user_slug: String,
-    party_id: Uuid,
+    user_id: i32,
+    user_chats: Vec<i32>,
     lobby_addr: Addr<Lobby>,
     hb: Instant,
 }
 
 impl WsConn {
-    pub fn new(user_slug: String, party_id: Uuid, lobby_addr: Addr<Lobby>) -> Self {
+    pub fn new(user_id: i32, user_chats: Vec<i32>, lobby_addr: Addr<Lobby>) -> Self {
         Self {
             ws_id: Uuid::new_v4(),
-            user_slug,
-            party_id,
+            user_id,
+            user_chats,
             hb: Instant::now(),
             lobby_addr,
         }
@@ -40,8 +40,7 @@ impl WsConn {
             if Instant::now().duration_since(actor.hb) > CLIENT_TIMEOUT {
                 warn!("disconnecting client without heartbeat");
                 actor.lobby_addr.do_send(ActorEvent::Disconnect {
-                    user_slug: actor.user_slug.clone(),
-                    party_id: actor.party_id,
+                    user_id: actor.user_id,
                     ws_id: actor.ws_id,
                 });
                 ctx.stop();
@@ -62,8 +61,8 @@ impl Actor for WsConn {
         self.lobby_addr
             .send(ActorEvent::Connect {
                 address: address.recipient(),
-                party_id: self.party_id,
-                user_slug: self.user_slug.clone(),
+                user_id: self.user_id,
+                user_chats: self.user_chats.clone(),
                 ws_id: self.ws_id,
             })
             .into_actor(self)
@@ -78,8 +77,7 @@ impl Actor for WsConn {
 
     fn stopping(&mut self, _ctx: &mut Self::Context) -> actix::Running {
         self.lobby_addr.do_send(ActorEvent::Disconnect {
-            user_slug: self.user_slug.clone(),
-            party_id: self.party_id,
+            user_id: self.user_id,
             ws_id: self.ws_id,
         });
         Running::Stop
@@ -110,8 +108,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsConn {
                     if let Ok(event) = IncomingWsEvent::from_str(&event) {
                         self.lobby_addr.do_send(WsMessage {
                             ws_id: self.ws_id,
-                            user_slug: self.user_slug.clone(),
-                            party_id: self.party_id,
+                            user_id: self.user_id,
                             event,
                         });
                     }
