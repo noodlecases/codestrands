@@ -13,13 +13,17 @@ const NewProjectForm = (props: UserProp) => {
     const [projectLink, setProjectLink] = useState("")
     // const [projectImage, setProjectImage] = useState(undefined)
 
-    const handleProjectNameInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    // @ts-ignore
+    const handleProjectNameInput = (event) => {
         setProjectName(event.target.value)
     }
-    const handleProjectDescriptionInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+
+    // @ts-ignore
+    const handleProjectDescriptionInput = (event) => {
         setProjectDescription(event.target.value)
     }
-    const handleProjectLinkInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    // @ts-ignore
+    const handleProjectLinkInput = (event) => {
         setProjectLink(event.target.value)
     }
     // const handleProjectImageInput = event => {
