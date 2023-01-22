@@ -43,8 +43,8 @@ const SwipeCard = (props: UserProp) => {
         <div className="p-4">
             <div className="text-xl text-primary-content font-semibold">My Links</div>
             <div className="justify-start ml-2 p-2">
-            <li><a href="https://www.google.com/" className='text-sm underline'>Stuff</a> </li>
-            <li><a href="https://www.google.com/" className='text-sm underline'>Stuff</a> </li>
+            <li><a href="https://www.google.com/" className='text-sm underline'>Stuff</a></li>
+            <li><a href="https://www.google.com/" className='text-sm underline'>Stuff</a></li>
                 {/* {props.interests.map((skill: string) =>
                     <li><a href="https://www.google.com/" className='underline'>Stuff</a> </li>
                 )} */}

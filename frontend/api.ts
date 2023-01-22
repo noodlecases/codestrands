@@ -81,6 +81,30 @@ export const apiGetUserMe = async (): Promise<UserResponse> => {
     };
 }
 
+export type UserSocialLinkResponse = {
+    id: number,
+    userId: number,
+    name: string,
+    url: string,
+    createdAt: number, // ms since epoch
+    updatedAt: number // ms since epoch
+}
+export const apiGetUserSocialLinkResponse = async (): Promise<UserSocialLinkResponse[]> => {
+    const resp = await ApiClient.get(
+        "users/@me/social-links",
+    );
+    return resp.data.map((x: any) => {
+        return {
+            id: x.data.id,
+            userId: x.data.userId,
+            name: x.data.skillId,
+            url: x.data.url,
+            createdAt: Date.parse(x.data.createdAt),
+            updatedAt: Date.parse(x.data.updatedAt)
+        }
+    })
+}
+
 export type UserSkillResponse = {
     id: number,
     userId: number,
