@@ -12,7 +12,7 @@ const TextFieldForm = (props: UserProp) => {
 
     const[value, setValue] = useState("")
 
-    const handleInput = event => {
+    const handleInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setValue(event.target.value)
     }
 

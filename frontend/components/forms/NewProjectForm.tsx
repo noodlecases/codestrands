@@ -13,20 +13,20 @@ const NewProjectForm = (props: UserProp) => {
     const [projectLink, setProjectLink] = useState("")
     // const [projectImage, setProjectImage] = useState(undefined)
 
-    const handleProjectNameInput = event => {
+    const handleProjectNameInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setProjectName(event.target.value)
     }
-    const handleProjectDescriptionInput = event => {
+    const handleProjectDescriptionInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setProjectDescription(event.target.value)
     }
-    const handleProjectLinkInput = event => {
+    const handleProjectLinkInput = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setProjectLink(event.target.value)
     }
     // const handleProjectImageInput = event => {
     //     setProjectImage(event.target.files[0])
     // }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault()
         apiPostProjectMe({
             name: projectName,
@@ -38,6 +38,7 @@ const NewProjectForm = (props: UserProp) => {
     }
 
 
+    // @ts-ignore
     return (
         <div className='px-8 pb-8'>
             <div className="text-xl text-primary-content font-semibold pb-4">Add New Project</div>

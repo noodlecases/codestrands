@@ -81,6 +81,7 @@ const editProfile = (props: UserProp) => {
         })
     }, [])
 
+    // @ts-ignore
     return (
         <div className="flex justify-center">
             <div>
