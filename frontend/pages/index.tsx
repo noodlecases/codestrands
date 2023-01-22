@@ -2,7 +2,11 @@ import type {NextPage} from "next";
 import Head from "next/head";
 import Image from "next/image";
 
-const Home: NextPage = () => {
+const Home: NextPage = () => {    
+    if (typeof window !== "undefined" && window.location.href.includes("/?success=true")) {
+        window.location.replace("./home");
+    }
+
     return (
         <div className="flex min-h-screen flex-col items-center justify-center py-2">
             <Head>
