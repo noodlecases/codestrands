@@ -1,6 +1,7 @@
 use actix_web::web::ServiceConfig;
 
 mod auth;
+mod chat_messages;
 mod chat_users;
 mod chats;
 mod interests;
@@ -15,6 +16,9 @@ mod user_skills;
 pub fn config(config: &mut ServiceConfig) {
     config
         .configure(auth::config)
+        .configure(chat_messages::config)
+        .configure(chat_users::config)
+        .configure(chats::config)
         .configure(interests::config)
         .configure(projects::config)
         .configure(skills::config)

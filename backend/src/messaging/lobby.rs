@@ -1,4 +1,4 @@
-use std::{collections::HashMap, time::Duration};
+use std::collections::{HashMap, HashSet};
 
 use actix::{Actor, AsyncContext, Context, Handler, Recipient};
 use chrono::Utc;
@@ -6,13 +6,16 @@ use log::warn;
 use sqlx::PgPool;
 use uuid::Uuid;
 
-use crate::messaging::{messages::*, party::Party, status::Status};
+use crate::{
+    messaging::messages::*,
+    models::{chat_messages::ChatMessage, chat_users::ChatUser},
+};
 
 type Socket = Recipient<OutgoingWsEvent>;
 
 pub struct Lobby {
     sessions: HashMap<Uuid, Socket>,
-    parties: HashMap<Uuid, Party>,
+    chats: HashMap<i32, HashSet<Uuid>>,
     pool: PgPool,
 }
 
@@ -20,7 +23,7 @@ impl Lobby {
     pub fn new(pool: PgPool) -> Self {
         Self {
             sessions: HashMap::new(),
-            parties: HashMap::new(),
+            chats: HashMap::new(),
             pool,
         }
     }
@@ -40,93 +43,31 @@ impl Actor for Lobby {
 impl Handler<ActorEvent> for Lobby {
     type Result = ();
 
-    fn handle(&mut self, event: ActorEvent, ctx: &mut Self::Context) -> Self::Result {
+    fn handle(&mut self, event: ActorEvent, _ctx: &mut Self::Context) -> Self::Result {
         match event {
             ActorEvent::Connect {
                 address,
-                party_id,
-                user_slug,
+                user_id: _,
+                user_chats,
                 ws_id,
             } => {
-                self.parties
-                    .entry(party_id)
-                    .or_insert_with(|| Party::new(party_id))
-                    .members
-                    .insert(ws_id);
+                user_chats.iter().for_each(|chat| {
+                    self.chats
+                        .entry(*chat)
+                        .or_insert_with(|| HashSet::new())
+                        .insert(ws_id);
+                });
 
                 self.sessions.insert(ws_id, address);
-
-                // TODO: Implement HTTP route to fetch user status
-                self.parties
-                    .get(&party_id)
-                    .unwrap()
-                    .members
-                    .iter()
-                    .for_each(|id| {
-                        self.send_event(
-                            OutgoingWsEvent::StatusUpdate {
-                                user_slug: user_slug.clone(),
-                                timestamp: Utc::now(),
-                                status: Status::Online,
-                            },
-                            id,
-                        )
-                    });
-
-                let party = self.parties.get(&party_id).unwrap();
-
-                // TODO: Remove pending removal
-                if let Some(pending_removal) = party.pending_removal {
-                    ctx.cancel_future(pending_removal);
-                    self.parties.get_mut(&party_id).unwrap().pending_removal = None;
-                }
             }
-            ActorEvent::Disconnect {
-                party_id,
-                user_slug,
-                ws_id,
-            } => {
+            ActorEvent::Disconnect { user_id: _, ws_id } => {
                 if self.sessions.remove(&ws_id).is_some() {
-                    // TODO: Implement HTTP route to fetch user status
-                    self.parties
-                        .get(&party_id)
-                        .unwrap()
-                        .members
-                        .iter()
-                        .filter(|id| **id != ws_id)
-                        .for_each(|id| {
-                            self.send_event(
-                                OutgoingWsEvent::StatusUpdate {
-                                    user_slug: user_slug.clone(),
-                                    timestamp: Utc::now(),
-                                    status: Status::Offline,
-                                },
-                                id,
-                            )
+                    self.chats
+                        .iter_mut()
+                        .filter(|item| item.1.contains(&ws_id))
+                        .for_each(|item| {
+                            item.1.remove(&ws_id);
                         });
-
-                    if let Some(party) = self.parties.get_mut(&party_id) {
-                        party.members.remove(&ws_id);
-
-                        if party.members.is_empty() {
-                            if let Some(pending_removal) = party.pending_removal {
-                                ctx.cancel_future(pending_removal);
-                            }
-
-                            let pending_removal =
-                                ctx.run_later(Duration::from_secs(60), move |actor, _ctx| {
-                                    if let Some(party) = actor.parties.get_mut(&party_id) {
-                                        if party.members.is_empty() {
-                                            actor.parties.remove(&party_id);
-                                        } else {
-                                            party.pending_removal = None;
-                                        }
-                                    }
-                                });
-
-                            party.pending_removal = Some(pending_removal);
-                        }
-                    }
                 }
             }
         }
@@ -137,24 +78,38 @@ impl Handler<WsMessage> for Lobby {
     type Result = ();
 
     fn handle(&mut self, msg: WsMessage, ctx: &mut Self::Context) -> Self::Result {
-        let user_slug = msg.user_slug;
+        let user_id = msg.user_id;
         let timestamp = Utc::now();
 
-        let outgoing_event = match msg.event {
-            IncomingWsEvent::Message { content } => Some(OutgoingWsEvent::Message {
-                user_slug,
-                timestamp,
-                content,
-            }),
-        };
+        match msg.event {
+            IncomingWsEvent::Message { chat_id, content } => {
+                let pool = self.pool.clone();
+                let message_content = content.clone();
 
-        if let Some(event) = outgoing_event {
-            self.parties
-                .get(&msg.party_id)
-                .unwrap()
-                .members
-                .iter()
-                .for_each(|ws_id| self.send_event(event.clone(), ws_id));
-        }
+                ctx.spawn(actix::fut::wrap_future(async move {
+                    if ChatUser::get(user_id, chat_id, &pool).await.is_ok() {
+                        ChatMessage::create(chat_id, user_id, &content, &pool)
+                            .await
+                            .unwrap();
+                    }
+                }));
+
+                self.chats
+                    .get(&chat_id)
+                    .unwrap()
+                    .iter()
+                    .for_each(|ws_id| {
+                        self.send_event(
+                            OutgoingWsEvent::Message {
+                                user_id,
+                                timestamp,
+                                chat_id,
+                                content: message_content.clone(),
+                            },
+                            ws_id,
+                        );
+                    });
+            }
+        };
     }
 }
