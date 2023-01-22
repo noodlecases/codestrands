@@ -7,13 +7,4 @@ Using a mix of rigid credibility and intimate vulnerability, Codestrands profile
 Our comprehensive backend in Rust, the most beloved language by its users on Stack Overflow, served us well with its inbuilt API library Actix Web. Our frontend was a multilayered amalgamation of Next.js, Tailwind CSS, and DaisyUI components to further enhance the modern feel.
 # Challenges we ran into
 The time constraint of 36 hours was a bit much on our ambitious idea. This led to drowsiness due to lack of rest, which hindered our full potential. As this was many of our first hackathons and our first one together, our inexperience with the format and many tech stacks in general led to a real challenge. 
-# Accomplishments that we're proud of
 
-# What we learned
-
-# What's next?
-/.
-# Built with
-/.
-# Try it out
-link to download
