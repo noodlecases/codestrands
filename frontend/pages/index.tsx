@@ -20,7 +20,7 @@ const Home: NextPage = () => {
         </h1>
 
         <p className="mt-3 text-2xl">
-          Find others to work with on personal projects!{" "}
+          Find others to work with on coding projects!{" "}
         </p>
 
         <button className="btn btn-info m-8">Get Started Today</button>
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       <footer className="flex h-24 w-full items-center justify-center border-t">
         <a
           className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://github.com/noodlecases"
           target="_blank"
           rel="noopener noreferrer"
         >

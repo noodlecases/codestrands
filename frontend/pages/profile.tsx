@@ -1,5 +1,15 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
+import ProfileExpanded from '../components/profile/ProfileExpanded'
+import Projects from '../components/profile/Projects';
+
+const user = {
+    username: "Aaron", 
+    bio: "test", 
+    topSkills: ["skill1", "skill2", "skill3"], 
+    skills: ["skill", "skill", "skill", "skill"], 
+    interests: ["interests", "interests", "interests", "interests"]
+};
 
 export const profile = () => {
   return (
@@ -10,7 +20,8 @@ export const profile = () => {
             </button>
         </div>
         <div className = "flex h-screen w-[60%] border-base-content border-x-2"> 
-            <div className = "bg-base-100 w-96 h-[95vh] rounded-3xl p-4 m-4">
+            <ProfileExpanded  {...user}/>
+            {/* <div className = "bg-base-100 w-96 h-[95vh] rounded-3xl p-4 m-4">
                 <div className='flex h-20 bg-primary rounded-3xl items-center p-2'>
                     <div className = "text-2xl font-bold item-center w-full pl-4 text-primary-content">name</div>
                     <div className="avatar">
@@ -49,23 +60,9 @@ export const profile = () => {
                         )}
                     </div>
                 </div>
-            </div>
+            </div> */}
 
-            <div className = "bg-base-100 w-96 h-[95vh] rounded-3xl p-4 m-4">
-                <div className='h-20 bg-primary flex rounded-3xl items-center p-2'>
-                    <div className = "text-2xl font-bold item-center w-full pl-4 text-primary-content">Projects</div>
-                </div>
-
-                <div className='h-36 bg-base-200 rounded-3xl p-2 my-4'>
-                    <div className='flex'>
-                        <div className="font-bold pl-2">Project 1</div>
-                        <div className="font-light pl-2">Link to project</div>
-                    </div>
-                    <div className='pl-2 pt-0.5'>
-                        Project description
-                    </div>
-                </div>
-            </div>
+            <Projects {...user}/>
         </div>
     </div>
   )
