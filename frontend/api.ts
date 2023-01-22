@@ -98,7 +98,7 @@ export const apiGetUserSkillMe = async (): Promise<UserSkillResponse[]> => {
             skillId: x.data.skillId,
             createdAt: Date.parse(x.data.createdAt)
         }
-    };
+    })
 }
 
 export type UserInterestResponse = {
@@ -118,7 +118,7 @@ export const apiGetUserInterestMe = async (): Promise<UserInterestResponse[]> =>
             interestId: x.data.interestId,
             createdAt: Date.parse(x.data.createdAt)
         }
-    };
+    })
 }
 
 export type ProjectResponse = {

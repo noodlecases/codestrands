@@ -5,8 +5,16 @@ import TextFieldForm from "../components/forms/TextFieldForm";
 import TextAreaForm from "../components/forms/TextAreaForm";
 import BadgeForm from "../components/forms/BadgeForm";
 import BadgeListForm from "../components/forms/BadgeListForm";
-import {UserResponse, apiGetUserMe, apiGetUserSkillMe, apiGetUserInterestMe, apiGetUserProjectMe} from "../api"
+import {
+    UserResponse,
+    apiGetUserMe,
+    apiGetUserSkillMe,
+    apiGetUserInterestMe,
+    apiGetUserProjectMe,
+    UserSkillResponse, UserInterestResponse, ProjectResponse
+} from "../api"
 import {InfinitySpin} from "react-loader-spinner";
+import {list} from "postcss";
 
 type UserProp = {
     username: string,
@@ -17,23 +25,36 @@ type UserProp = {
 }
 
 const editProfile = (props: UserProp) => {
-    const [userResponse, setUserResponse] = useState({createdAt: 0})
-    const [userSkillResponse, setUserSkillResponse] = useState({createdAt: 0})
-    const [userInterestResponse, setUserInterestResponse] = useState({createdAt: 0})
-    const [userProjectResponse, setUserProjectResponse] = useState({createdAt: 0})
+    type Receipt<T> = { received: boolean, response: T }
+    const [userResponse, setUserResponse] = useState<Receipt<UserResponse>>({
+        received: false,
+        response: {}
+    })
+    const [userSkillResponse, setUserSkillResponse] = useState<Receipt<UserSkillResponse[]>>({
+        received: false,
+        response: []
+    })
+    const [userInterestResponse, setUserInterestResponse] = useState<Receipt<UserInterestResponse[]>>({
+        received: false,
+        response: []
+    })
+    const [userProjectResponse, setUserProjectResponse] = useState<Receipt<ProjectResponse[]>>({
+        received: false,
+        response: []
+    })
 
     useEffect(() => {
         apiGetUserMe().then((res) => {
-            setUserResponse(res)
+            setUserResponse({received: true, res})
         })
         apiGetUserSkillMe().then((res) => {
-            setUserSkillResponse(res)
+            setUserSkillResponse({received: true, response: res})
         })
         apiGetUserInterestMe().then((res) => {
-            setUserInterestResponse(res)
+            setUserInterestResponse({received: true, response: res})
         })
         apiGetUserProjectMe().then((res) => {
-            setUserProjectResponse(res)
+            setUserProjectResponse({received: true, response: res})
         })
     }, [])
 
@@ -44,18 +65,22 @@ const editProfile = (props: UserProp) => {
             </div>
             <div className="h-full w-[50%] border-base-content border-x-2">
                 <div className="text-3xl p-8 text-primary-content font-semibold">Edit Profile</div>
-                {userResponse.createdAt > 0 ? <div className='px-8 pb-8'>
-                    <TextFieldForm fieldName={"First name"} placeholder={userResponse.firstName}></TextFieldForm>
-                    <TextFieldForm fieldName={"Last name"} placeholder={userResponse.lastName}></TextFieldForm>
+                {userResponse.received ? <div className='px-8 pb-8'>
+                    <TextFieldForm fieldName={"First name"}
+                                   placeholder={userResponse.response.firstName}></TextFieldForm>
+                    <TextFieldForm fieldName={"Last name"} placeholder={userResponse.response.lastName}></TextFieldForm>
 
-                    <TextAreaForm fieldName={"Bio"} placeholder={userResponse.bio}></TextAreaForm>
+                    <TextAreaForm fieldName={"Bio"} placeholder={userResponse.response.bio}></TextAreaForm>
                 </div> : <InfinitySpin width='200' color="#4fa94d"/>}
-
                 <div className='px-8 pb-8'>
-                    <BadgeListForm name="Skills" badges={["info", "error"]}
-                                   buttonCaption="Add new skills"></BadgeListForm>
-                    <BadgeListForm name="Interests" badges={["success", "warning", "error"]}
-                                   buttonCaption="Add new interests"></BadgeListForm>
+                    {userSkillResponse.received ?
+                        <BadgeListForm name="Skills" badges={userSkillResponse.response.map((x) => x.skillId.toString())}
+                                       buttonCaption="Add new skills"></BadgeListForm>
+                        : <InfinitySpin width='200' color="#4fa94d"/>}
+                    {userInterestResponse.received ?
+                        <BadgeListForm name="Interests" badges={userInterestResponse.response.map((x) => x.interestId.toString())}
+                                       buttonCaption="Add new interests"></BadgeListForm>
+                        : <InfinitySpin width='200' color="#4fa94d"/>}
                 </div>
 
                 <div className='px-8 pb-8'>
