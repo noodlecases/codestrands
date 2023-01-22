@@ -41,11 +41,11 @@ const chat = () => {
                         </div>
                     </li>
                 </ul>
-                <div className='h-screen w-full border-base-content border-l-2'>
-                    <div className='flex justify-center h-12 m-4'>
+                <div className='h-screen overflow-y-auto relative w-full border-base-content border-l-2'>
+                    <div className='flex sticky top-0 z-50 justify-center h-12 p-3 bg-base-300'>
                         Name
                     </div>
-                    <div className='m-4'>
+                    <div className='m-4 h-[685px]'>
                         <div className="chat chat-start">
                             <div className="chat-image avatar">
                                 <div className="w-10 rounded-full">
@@ -71,9 +71,9 @@ const chat = () => {
                             <div className="chat-bubble">I hate you!</div>
                         </div>
                     </div>
-
-                    <div className='flex justify-center items-baseline'>
-                        <div className='absolute bottom-0 mb-4'>
+                    
+                    <div className='sticky bottom-0 pb-4'>
+                        <div className='flex justify-center items-baseline'>
                             <div className="form-control">
                                 <div className="input-group">
                                     <input type="text" placeholder="Send a message" className="input input-bordered w-96" />
