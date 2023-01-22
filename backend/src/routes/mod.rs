@@ -8,6 +8,7 @@ mod interests;
 mod projects;
 mod skills;
 mod social_links;
+mod swipes;
 mod user;
 mod user_interests;
 mod user_relationships;
@@ -23,6 +24,7 @@ pub fn config(config: &mut ServiceConfig) {
         .configure(projects::config)
         .configure(skills::config)
         .configure(social_links::config)
+        .configure(swipes::config)
         .configure(user::config)
         .configure(user_interests::config)
         .configure(user_relationships::config)

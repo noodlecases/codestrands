@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { InfinitySpin } from 'react-loader-spinner';
+import { apiGetTopSwipeMe } from '../api';
 import Navbar from '../components/Navbar'
 import SwipeCard from '../components/SwipeCard'
 
@@ -13,6 +15,18 @@ const home = () => {
   const [cards, setCards] = useState(cardsList);
   const [swipeDirection, setSwipeDirection] = useState("stack");
 
+  type Receipt<T> = { received: boolean, response: T }
+  const [userTopSwipeResponse, setUserTopSwipeResponse] = useState<Receipt<UserSkillResponse[]>>({
+      received: false,
+      response: []
+  })
+
+  useEffect(() => {
+    apiGetTopSwipeMe().then((res) => {
+      setUserTopSwipeResponse({received: true, response: res})
+    })
+  }, [])
+
   return (
     <div className = "flex justify-center">
         <div>
@@ -21,9 +35,14 @@ const home = () => {
         <div className = "h-screen w-[40%] border-base-content border-x-2">
           <div className='flex justify-center'>
             <div className={swipeDirection} onAnimationEnd={() => {setSwipeDirection("stack"); setCards(cards.slice(1));}}>
-              {cards.map((card) =>
+            {userTopSwipeResponse.received ? userTopSwipeResponse.response.map((card) =>
+                            <SwipeCard username={card.name} bio={card.bio} topSkills={["skill1", "skill2", "skill3"]} skills={["skill1", "skill2", "skill3"]} />
+                        ) : <InfinitySpin width='200' color="#4fa94d"/>}
+              {/* {cards.map((card) =>
+              
+                <SwipeCard username={userTopSwipeResponse.response.m} bio={''} topSkills={[]} skills={[]} />
                 <SwipeCard {...card}/>
-              )} 
+              )}  */}
             </div>
           </div>
           <div className='flex justify-center items-center p-4'>
@@ -49,3 +68,7 @@ const home = () => {
 }
 
 export default home
+
+function setUserSkillResponse(arg0: { received: boolean; response: import("../api").TopSwipeResponse[]; }) {
+  throw new Error('Function not implemented.');
+}
