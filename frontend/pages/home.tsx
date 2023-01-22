@@ -9,7 +9,7 @@ const cardsList = [
   user
 ]
 
-const swipe = () => {
+const home = () => {
   const [cards, setCards] = useState(cardsList);
   const [swipeDirection, setSwipeDirection] = useState("stack");
 
@@ -48,4 +48,4 @@ const swipe = () => {
   )
 }
 
-export default swipe
+export default home
