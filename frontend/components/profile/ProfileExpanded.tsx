@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 type UserProp = {
@@ -53,7 +54,7 @@ const ProfileExpanded = (props: UserProp) => {
             <div className="text-xl text-primary-content font-semibold">My Links</div>
             <div className="justify-start ml-2 p-2">
                 {props.interests.map((skill: string) =>
-                    <li><a href="https://www.google.com/" className='text-sm underline'>Stuff</a> </li>
+                    <li><Link href="https://www.google.com/" className='text-sm underline'>Stuff</Link> </li>
                 )}
             </div>
         </div>
