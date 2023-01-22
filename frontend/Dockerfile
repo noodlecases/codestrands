@@ -18,7 +18,7 @@ ENV NODE_ENV production
 WORKDIR /usr/src/app
 
 COPY --from=builder /codestrands/public ./public
-COPY --from=builder /codestrands/dist ./dist
+# COPY --from=builder /codestrands/dist ./dist
 COPY --from=builder /codestrands/next.config.js ./next.config.js
 COPY --from=builder /codestrands/.next/ ./.next
 COPY --from=builder /codestrands/node_modules/ ./node_modules

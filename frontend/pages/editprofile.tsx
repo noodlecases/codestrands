@@ -81,7 +81,6 @@ const editProfile = (props: UserProp) => {
         })
     }, [])
 
-    // @ts-ignore
     return (
         <div className="flex justify-center">
             <div>
@@ -95,22 +94,25 @@ const editProfile = (props: UserProp) => {
                             firstName: d,
                         })
                     }}
-                                   placeholder={userResponse.firstName}></TextFieldForm>
+                                   placeholder={// @ts-ignore
+                        userResponse.firstName}></TextFieldForm>
                     <TextFieldForm fieldName={"Last name"} callFunction={(d: string) => {
                         apiPatchUserMe({
                             lastName: d,
                         })
                     }}
-                                   placeholder={userResponse.lastName}></TextFieldForm>
+                                   placeholder={// @ts-ignore
+                        userResponse.lastName}></TextFieldForm>
                     <TextAreaForm fieldName={"Bio"} callFunction={(d: string) => {
                         apiPatchUserMe({
                             bio: d,
                         })
                     }}
-                                  placeholder={userResponse.bio}></TextAreaForm>
+                                  placeholder={// @ts-ignore
+                        userResponse.bio}></TextAreaForm>
                 </div> : <InfinitySpin width='200' color="#4fa94d"/>}
                 <div className='px-8 pb-8'>
-                    {userSkillResponse.received && skillResponse.received ?
+                    {userSkillResponse.received && skillResponse.received ? // @ts-ignore
                         <BadgeListForm name="Skills" badges={userSkillResponse.response.map((x) => {
                             for (let i = 0; i < skillResponse.response.length; i++) {
                                 if (x.skillId === skillResponse.response[i].id) {
@@ -125,7 +127,7 @@ const editProfile = (props: UserProp) => {
                             return {id: x.id, name: x.name, toggleFunction: apiPutUserSkillMe}
                         })} buttonCaption="Add new skills"></BadgeListForm>
                         : <InfinitySpin width='200' color="#4fa94d"/>}
-                    {userInterestResponse.received && interestResponse.received ?
+                    {userInterestResponse.received && interestResponse.received ? // @ts-ignore
                         <BadgeListForm name="Interests" badges={userInterestResponse.response.map((x) => {
                             for (let i = 0; i < interestResponse.response.length; i++) {
                                 if (x.interestId === interestResponse.response[i].id) {
