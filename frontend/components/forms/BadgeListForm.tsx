@@ -24,7 +24,7 @@ const BadgeListForm = (props: UserProp) => {
         <div>
             <div className='px-8 pb-2'>
                 <div className="text-xl text-primary-content font-semibold pb-2">{props.name}</div>
-                {props.badges.map((badge: Badge) => <BadgeForm badgeName={badge.name} key={badge.name}
+                {props.badges.map((badge: Badge) => <BadgeForm badgeName={badge.name} key={badge.id}
                                                                badgeId={badge.id}
                                                                deleteFunction={badge.toggleFunction}></BadgeForm>)}
             </div>

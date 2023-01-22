@@ -87,8 +87,8 @@ async fn update_social_link(
 
 pub fn config(config: &mut ServiceConfig) {
     config
-        .service(get_user_social_links)
         .service(get_me_social_links)
+        .service(get_user_social_links)
         .service(create_social_link)
         .service(delete_social_link)
         .service(update_social_link);

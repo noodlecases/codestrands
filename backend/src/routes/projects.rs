@@ -101,8 +101,8 @@ async fn update_project(
 
 pub fn config(config: &mut ServiceConfig) {
     config
-        .service(get_user_projects)
         .service(get_me_projects)
+        .service(get_user_projects)
         .service(create_project)
         .service(update_project)
         .service(delete_project);

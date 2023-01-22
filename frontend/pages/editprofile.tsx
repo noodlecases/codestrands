@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import Navbar from '../components/Navbar'
-import ProjectCard from '../components/ProjectCard'
 import TextFieldForm from "../components/forms/TextFieldForm";
 import TextAreaForm from "../components/forms/TextAreaForm";
 import BadgeForm from "../components/forms/BadgeForm";
@@ -22,10 +21,12 @@ import {
     apiPutUserSkillMe,
     apiDeleteUserSkillMe,
     apiDeleteUserInterestMe,
-    apiPutUserInterestMe
+    apiPutUserInterestMe, apiDeleteProjectMe
 } from "../api"
 import {InfinitySpin} from "react-loader-spinner";
 import {list} from "postcss";
+import NewProjectForm from "../components/forms/NewProjectForm";
+import ManageProjectForm from "../components/forms/ManageProjectForm";
 
 type UserProp = {
     username: string,
@@ -141,30 +142,15 @@ const editProfile = (props: UserProp) => {
                 </div>
 
                 <div className='px-8 pb-8'>
-                    <div className="text-xl text-primary-content font-semibold pb-4">Remove Projects</div>
-                    <ProjectCard/>
-                    <ProjectCard/>
-                    <ProjectCard/>
+                    <div className="text-xl text-primary-content font-semibold pb-4">Manage Projects</div>
+                    {userProjectResponse.received ? userProjectResponse.response.map((project) =>
+                            <ManageProjectForm name={project.name} url={project.url} projectId={project.id}
+                                               description={project.description} image={project.image} key={project.id}
+                                               deleteFunction={apiDeleteProjectMe}></ManageProjectForm>
+                        ) : <InfinitySpin width='200' color="#4fa94d"/>}
                 </div>
 
-                <div className='px-8 pb-8'>
-                    <div className="text-xl text-primary-content font-semibold pb-4">Add New Project</div>
-
-                    <div className="text-xl text-primary-content font-semibold">Project Name</div>
-                    <input type="text" placeholder="Project Name"
-                           className="input input-bordered w-full max-w-xs mr-2 mb-2"/>
-
-                    <div className="text-xl text-primary-content font-semibold">Description</div>
-                    <textarea rows={5} cols={40} className="textarea textarea-bordered"
-                              placeholder="Description"></textarea>
-
-                    <div className="text-xl text-primary-content font-semibold">Link</div>
-                    <input type="text" placeholder="Project Link"
-                           className="input input-bordered w-full max-w-xs mr-2 mb-2"/>
-
-                    <div className="text-xl text-primary-content font-semibold">Image</div>
-                    <input type="file" className="file-input file-input-bordered w-full max-w-xs"/>
-                </div>
+                <NewProjectForm></NewProjectForm>
 
                 <button className="btn btn-primary mx-8 mb-20">Add Project</button>
             </div>

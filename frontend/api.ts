@@ -151,12 +151,12 @@ export type ProjectResponse = {
     name: string,
     description: string,
     url: string,
-    image: string | null,
+    image?: string,
     createdAt: number, // ms since epoch
 }
 export const apiGetUserProjectMe = async (): Promise<ProjectResponse[]> => {
     const resp = await ApiClient.get(
-        "users/@me/interests/",
+        "users/@me/projects/",
     );
     return resp.data.map((x: any) => {
         return {
@@ -273,6 +273,13 @@ export const apiDeleteUserSkillMe = async (skillId: number): Promise<AxiosRespon
 export const apiDeleteUserInterestMe = async (interestId: number): Promise<AxiosResponse> => {
     const resp = await ApiClient.delete(
         "users/@me/interests/" + interestId.toString() + "/"
+    )
+    return resp
+}
+
+export const apiDeleteProjectMe = async (projectId: number): Promise<AxiosResponse> => {
+    const resp = await ApiClient.delete(
+        "users/@me/projects/" + projectId.toString() + "/"
     )
     return resp
 }
