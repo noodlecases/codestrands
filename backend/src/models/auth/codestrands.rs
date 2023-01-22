@@ -19,7 +19,7 @@ pub struct User {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct PublicUser {
     pub first_name: String,
