@@ -35,3 +35,12 @@ async fn send_message(message: Json<MessageInfo>, path: Path<i32>, pool: Data<Pg
 async fn delete_message(path: Path<i32>, pool: Data<PgPool>) -> Result<Json<()>>{
     Ok(Json(ChatMessage::delete(path.into_inner(), &pool).await?))
 }
+
+pub fn config(config: &mut ServiceConfig) {
+    config
+        .service(get_all_chat_messages)
+        .service(get_message)
+        .service(send_message)
+        .service(delete_message);
+}
+
