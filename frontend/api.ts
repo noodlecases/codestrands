@@ -223,12 +223,32 @@ export const apiPutUserSkillMe = async (skillId: number): Promise<UserSkillRespo
     }
 }
 
+export const apiPutUserInterestMe = async (interestId: number): Promise<UserInterestResponse> => {
+    const resp = await ApiClient.put(
+        "users/@me/interests/" + interestId.toString() + "/"
+    )
+    return {
+        id: resp.data.id,
+        userId: resp.data.userId,
+        interestId: resp.data.interestId,
+        createdAt: Date.parse(resp.data.createdAt),
+    }
+}
+
+
 ///////////////////////////////////////////////////
 // Definitions for API DELETE routes begin here. //
 ///////////////////////////////////////////////////
 export const apiDeleteUserSkillMe = async (skillId: number): Promise<AxiosResponse> => {
     const resp = await ApiClient.delete(
         "users/@me/skills/" + skillId.toString() + "/"
+    )
+    return resp
+}
+
+export const apiDeleteUserInterestMe = async (interestId: number): Promise<AxiosResponse> => {
+    const resp = await ApiClient.delete(
+        "users/@me/interests/" + interestId.toString() + "/"
     )
     return resp
 }
