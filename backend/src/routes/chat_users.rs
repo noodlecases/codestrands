@@ -13,8 +13,6 @@ use crate::{
 
 #[put("/chats/{chat_id}/users/")]
 async fn join_chat(path: Path<i32>, session: UserSession, pool: Data<PgPool>) -> Result<Json<ChatUser>> {
-    // get other user id
-    // check if the two are paired
     let temp = path.into_inner();
     let users = ChatUser::get_by_chat(temp, &pool).await?;
     for user in users {
