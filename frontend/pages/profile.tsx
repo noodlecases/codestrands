@@ -72,9 +72,9 @@ export const profile = () => {
                 </div>
 
                 <div className="pl-4 pt-4 text-xl text-primary-content font-semibold">Top Skills</div>
-                <div className="flex justify-start py-4">
+                <div className="justify-start py-4">
                     {userSkillResponse.received ?
-                        userSkillResponse.response.map((x) => <div className="badge badge-primary p-4 m-2">{x.skillId.toString()}</div>)
+                        userSkillResponse.response.map((x) => <div className="badge badge-primary p-4 mb-2 mr-1">{x.skillId.toString()}</div>)
                         : <InfinitySpin width='200' color="#4fa94d"/>}
                 </div>
 
@@ -86,17 +86,17 @@ export const profile = () => {
                 </div>
                 <div className="p-4">
                     <div className="text-xl text-primary-content font-semibold">Other Skills</div>
-                    <div className="flex justify-start py-2">
+                    <div className="justify-start py-2">
                         {userSkillResponse.received ?
-                            userSkillResponse.response.map((x) => <div className="badge badge-primary p-4 m-2">{x.skillId.toString()}</div>)
+                            userSkillResponse.response.map((x) => <div className="badge badge-primary p-4 mb-2 mr-1">{x.skillId.toString()}</div>)
                             : <InfinitySpin width='200' color="#4fa94d"/>}
                     </div>
                 </div>
                 <div className="px-4">
                     <div className="text-xl text-primary-content font-semibold">Interests</div>
-                    <div className="flex justify-start py-2">
+                    <div className="justify-start py-2">
                         {userInterestResponse.received ?
-                            userInterestResponse.response.map((x) => <div className="badge badge-primary p-4 m-2">{x.interestId.toString()}</div>)
+                            userInterestResponse.response.map((x) => <div className="badge badge-primary p-4 mb-2 mr-1">{x.interestId.toString()}</div>)
                             : <InfinitySpin width='200' color="#4fa94d"/>}
                     </div>
                 </div>
