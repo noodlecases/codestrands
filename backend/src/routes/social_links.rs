@@ -12,12 +12,14 @@ use crate::{
 };
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct SocialLinkData {
     name: String,
     url: String,
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct PatchedSocialLink {
     name: Option<String>,
     url: Option<String>,

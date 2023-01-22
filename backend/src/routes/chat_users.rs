@@ -11,6 +11,7 @@ use crate::{
 };
 
 #[derive(Deserialize)]
+#[serde(rename_all = "kebab-case")]
 struct ChatInviteQuery {
     user_id: i32,
 }

@@ -11,11 +11,13 @@ use crate::{
 };
 
 #[derive(Deserialize)]
+#[serde(rename_all = "kebab-case")]
 struct UserPath {
     username: String,
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct PatchedUser {
     first_name: Option<String>,
     last_name: Option<String>,

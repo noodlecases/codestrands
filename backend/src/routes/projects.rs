@@ -11,6 +11,7 @@ use crate::{
 };
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct NewProjectData {
     name: String,
     description: String,
@@ -19,6 +20,7 @@ struct NewProjectData {
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct PatchedProject {
     name: Option<String>,
     description: Option<String>,
