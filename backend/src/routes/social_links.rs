@@ -34,7 +34,7 @@ async fn get_user_social_links(
 }
 
 #[get("/users/@me/social-links/")]
-async fn get_user_social_links(
+async fn get_me_social_links(
     session: UserSession,
     pool: Data<PgPool>,
 ) -> Result<Json<Vec<SocialLink>>> {
