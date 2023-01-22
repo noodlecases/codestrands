@@ -171,6 +171,44 @@ export const apiGetUserProjectMe = async (): Promise<ProjectResponse[]> => {
     });
 }
 
+export type SkillResponse = {
+    id: number,
+    name: string,
+    createdAt: number, // ms since epoch
+}
+export const apiGetSkillAll = async (): Promise<SkillResponse[]> => {
+    const resp = await ApiClient.get(
+        "skills/",
+    );
+    return resp.data.map((x: any) => {
+        return {
+            id: x.id,
+            userId: x.userId,
+            name: x.name,
+            createdAt: Date.parse(x.createdAt),
+        }
+    });
+}
+
+export type InterestResponse = {
+    id: number,
+    name: string,
+    createdAt: number, // ms since epoch
+}
+export const apiGetInterestAll = async (): Promise<InterestResponse[]> => {
+    const resp = await ApiClient.get(
+        "interests/",
+    );
+    return resp.data.map((x: any) => {
+        return {
+            id: x.id,
+            userId: x.userId,
+            name: x.name,
+            createdAt: Date.parse(x.createdAt),
+        }
+    });
+}
+
 //////////////////////////////////////////////////
 // Definitions for API PATCH routes begin here. //
 //////////////////////////////////////////////////
