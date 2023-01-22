@@ -26,7 +26,7 @@ const ManageProjectForm = (props: UserProp) => {
                 <div className="card-actions justify-end">
                     <button className="btn btn-circle" onClick={() => {
                         props.deleteFunction(props.projectId)
-                        //router.reload()
+                        router.reload()
                     }}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                              stroke="currentColor">

@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "aws-sdk": "^2.1299.0",
     "axios": "^1.2.3",
     "daisyui": "^2.47.0",
     "next": "latest",

@@ -141,18 +141,18 @@ const editProfile = (props: UserProp) => {
                         : <InfinitySpin width='200' color="#4fa94d"/>}
                 </div>
 
+                <NewProjectForm></NewProjectForm>
+
                 <div className='px-8 pb-8'>
                     <div className="text-xl text-primary-content font-semibold pb-4">Manage Projects</div>
-                    {userProjectResponse.received ? userProjectResponse.response.map((project) =>
+                    {userProjectResponse.received ? userProjectResponse.response.length === 0 ?
+                        <p>You currently do not have any projects. Why not create one?</p>
+                        : userProjectResponse.response.map((project) =>
                             <ManageProjectForm name={project.name} url={project.url} projectId={project.id}
                                                description={project.description} image={project.image} key={project.id}
                                                deleteFunction={apiDeleteProjectMe}></ManageProjectForm>
                         ) : <InfinitySpin width='200' color="#4fa94d"/>}
                 </div>
-
-                <NewProjectForm></NewProjectForm>
-
-                <button className="btn btn-primary mx-8 mb-20">Add Project</button>
             </div>
         </div>
     )

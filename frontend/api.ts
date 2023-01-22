@@ -232,6 +232,31 @@ export const apiPatchUserMe = async (data: PatchUserRequest): Promise<UserRespon
     };
 }
 
+/////////////////////////////////////////////////
+// Definitions for API POST routes begin here. //
+/////////////////////////////////////////////////
+type ProjectRequest = {
+    name: string,
+    description: string,
+    url: string,
+    image?: string,
+}
+export const apiPostProjectMe = async (data: ProjectRequest): Promise<ProjectResponse> => {
+    const resp = await ApiClient.post(
+        "users/@me/projects/",
+        data
+    )
+    return {
+        id: resp.data.id,
+        userId: resp.data.userId,
+        name: resp.data.name,
+        description: resp.data.description,
+        url: resp.data.url,
+        image: resp.data.image,
+        createdAt: Date.parse(resp.data.createdAt),
+    }
+}
+
 ////////////////////////////////////////////////
 // Definitions for API PUT routes begin here. //
 ////////////////////////////////////////////////

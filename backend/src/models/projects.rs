@@ -56,7 +56,7 @@ impl Project {
                         name,
                         description,
                         url,
-                        image,
+                        image
                     )
                     VALUES ($1, $2, $3, $4, $5)
                     RETURNING *
@@ -96,7 +96,7 @@ impl Project {
     }
 
     pub async fn delete(user_id: i32, id: i32, pool: &PgPool) -> Result<()> {
-        sqlx::query("DELETE FROM user_relationships WHERE id = $1 AND user_id = $2")
+        sqlx::query("DELETE FROM projects WHERE id = $1 AND user_id = $2")
             .bind(id)
             .bind(user_id)
             .execute(pool)
