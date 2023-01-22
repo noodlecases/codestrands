@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "axios": "^1.2.3",
     "daisyui": "^2.47.0",
     "next": "latest",
@@ -13,7 +14,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-loader-spinner": "^5.3.4",
-    "react-router-dom": "^6.7.0"
+    "react-router-dom": "^6.7.0",
+    "react-use-websocket": "3.0.0"
   },
   "devDependencies": {
     "@types/node": "18.11.3",
