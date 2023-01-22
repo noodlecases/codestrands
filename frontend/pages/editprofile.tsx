@@ -26,10 +26,7 @@ type UserProp = {
 
 const editProfile = (props: UserProp) => {
     type Receipt<T> = { received: boolean, response: T }
-    const [userResponse, setUserResponse] = useState<Receipt<UserResponse>>({
-        received: false,
-        response: {}
-    })
+    const [userResponse, setUserResponse] = useState({createdAt: 0})
     const [userSkillResponse, setUserSkillResponse] = useState<Receipt<UserSkillResponse[]>>({
         received: false,
         response: []
@@ -45,7 +42,7 @@ const editProfile = (props: UserProp) => {
 
     useEffect(() => {
         apiGetUserMe().then((res) => {
-            setUserResponse({received: true, res})
+            setUserResponse(res)
         })
         apiGetUserSkillMe().then((res) => {
             setUserSkillResponse({received: true, response: res})
@@ -65,12 +62,12 @@ const editProfile = (props: UserProp) => {
             </div>
             <div className="h-full w-[50%] border-base-content border-x-2">
                 <div className="text-3xl p-8 text-primary-content font-semibold">Edit Profile</div>
-                {userResponse.received ? <div className='px-8 pb-8'>
+                {userResponse.createdAt > 0 ? <div className='px-8 pb-8'>
                     <TextFieldForm fieldName={"First name"}
-                                   placeholder={userResponse.response.firstName}></TextFieldForm>
-                    <TextFieldForm fieldName={"Last name"} placeholder={userResponse.response.lastName}></TextFieldForm>
+                                   placeholder={userResponse.firstName}></TextFieldForm>
+                    <TextFieldForm fieldName={"Last name"} placeholder={userResponse.lastName}></TextFieldForm>
 
-                    <TextAreaForm fieldName={"Bio"} placeholder={userResponse.response.bio}></TextAreaForm>
+                    <TextAreaForm fieldName={"Bio"} placeholder={userResponse.bio}></TextAreaForm>
                 </div> : <InfinitySpin width='200' color="#4fa94d"/>}
                 <div className='px-8 pb-8'>
                     {userSkillResponse.received ?
