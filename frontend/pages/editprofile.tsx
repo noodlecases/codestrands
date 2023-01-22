@@ -17,7 +17,7 @@ import {
     apiPatchUserMe,
     SkillResponse,
     InterestResponse,
-    apiGetSkillAll, apiGetInterestAll
+    apiGetSkillAll, apiGetInterestAll, apiPutUserSkillMe, apiDeleteUserSkillMe
 } from "../api"
 import {InfinitySpin} from "react-loader-spinner";
 import {list} from "postcss";
@@ -110,11 +110,12 @@ const editProfile = (props: UserProp) => {
                                     return {
                                         id: skillResponse.response[i].id,
                                         name: skillResponse.response[i].name,
+                                        toggleFunction: apiDeleteUserSkillMe,
                                     }
                                 }
                             }
                         })} allBadges={skillResponse.response.map((x) => {
-                            return {id: x.id, name: x.name}
+                            return {id: x.id, name: x.name, toggleFunction: apiPutUserSkillMe}
                         })} buttonCaption="Add new skills"></BadgeListForm>
                         : <InfinitySpin width='200' color="#4fa94d"/>}
                     {userInterestResponse.received && interestResponse.received ?

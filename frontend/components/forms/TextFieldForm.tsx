@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {useRouter} from "next/router";
 
 type UserProp = {
     fieldName: string,
@@ -7,6 +8,8 @@ type UserProp = {
 }
 
 const TextFieldForm = (props: UserProp) => {
+    const router = useRouter()
+
     const[value, setValue] = useState("")
 
     const handleInput = event => {
@@ -14,8 +17,10 @@ const TextFieldForm = (props: UserProp) => {
     }
 
     const callInput = () => {
-        if (props.callFunction != null)
+        if (props.callFunction != null) {
             props.callFunction(value)
+            router.reload()
+        }
     }
 
     return (

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {number} from "prop-types";
 
 export const API_BASE_URL = "/api/v1";
@@ -93,10 +93,10 @@ export const apiGetUserSkillMe = async (): Promise<UserSkillResponse[]> => {
     );
     return resp.data.map((x: any) => {
         return {
-            id: x.data.id,
-            userId: x.data.userId,
-            skillId: x.data.skillId,
-            createdAt: Date.parse(x.data.createdAt)
+            id: x.id,
+            userId: x.userId,
+            skillId: x.skillId,
+            createdAt: Date.parse(x.createdAt)
         }
     })
 }
@@ -113,10 +113,10 @@ export const apiGetUserInterestMe = async (): Promise<UserInterestResponse[]> =>
     );
     return resp.data.map((x: any) => {
         return {
-            id: x.data.id,
-            userId: x.data.userId,
-            interestId: x.data.interestId,
-            createdAt: Date.parse(x.data.createdAt)
+            id: x.id,
+            userId: x.userId,
+            interestId: x.interestId,
+            createdAt: Date.parse(x.createdAt)
         }
     })
 }
@@ -178,7 +178,6 @@ export const apiGetInterestAll = async (): Promise<InterestResponse[]> => {
     return resp.data.map((x: any) => {
         return {
             id: x.id,
-            userId: x.userId,
             name: x.name,
             createdAt: Date.parse(x.createdAt),
         }
@@ -194,7 +193,6 @@ type PatchUserRequest = {
     bio?: string;
 }
 export const apiPatchUserMe = async (data: PatchUserRequest): Promise<UserResponse> => {
-    console.log(data)
     const resp = await ApiClient.patch(
         "users/@me/",
         data
@@ -208,4 +206,29 @@ export const apiPatchUserMe = async (data: PatchUserRequest): Promise<UserRespon
         createdAt: Date.parse(resp.data.createdAt),
         updatedAt: Date.parse(resp.data.updatedAt),
     };
+}
+
+////////////////////////////////////////////////
+// Definitions for API PUT routes begin here. //
+////////////////////////////////////////////////
+export const apiPutUserSkillMe = async (skillId: number): Promise<UserSkillResponse> => {
+    const resp = await ApiClient.put(
+        "users/@me/skills/" + skillId.toString() + "/"
+    )
+    return {
+        id: resp.data.id,
+        userId: resp.data.userId,
+        skillId: resp.data.skillId,
+        createdAt: Date.parse(resp.data.createdAt),
+    }
+}
+
+///////////////////////////////////////////////////
+// Definitions for API DELETE routes begin here. //
+///////////////////////////////////////////////////
+export const apiDeleteUserSkillMe = async (skillId: number): Promise<AxiosResponse> => {
+    const resp = await ApiClient.delete(
+        "users/@me/skills/" + skillId.toString() + "/"
+    )
+    return resp
 }
