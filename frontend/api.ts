@@ -66,7 +66,7 @@ export type UserResponse = {
     createdAt: number; // ms since epoch
     updatedAt: number; // ms since epoch
 }
-export const api_get_user_me = async (): Promise<UserResponse> => {
+export const apiGetUserMe = async (): Promise<UserResponse> => {
     const resp = await ApiClient.get(
         "users/@me/",
     );
@@ -87,14 +87,32 @@ export type UserSkillResponse = {
     skillId: number,
     createdAt: number, // ms since epoch
 }
-export const api_get_user_skill_me = async (): Promise<UserSkillResponse> => {
+export const apiGetUserSkillMe = async (): Promise<UserSkillResponse> => {
     const resp = await ApiClient.get(
-        "users/@me/",
+        "users/@me/skills/",
     );
     return {
         id: resp.data.id,
         userId: resp.data.userId,
         skillId: resp.data.skillId,
+        createdAt: Date.parse(resp.data.createdAt)
+    };
+}
+
+export type UserInterestResponse = {
+    id: number,
+    userId: number,
+    interestId: number,
+    createdAt: number,
+}
+export const apiGetUserInterestMe = async (): Promise<UserInterestResponse> => {
+    const resp = await ApiClient.get(
+        "users/@me/interests/",
+    );
+    return {
+        id: resp.data.id,
+        userId: resp.data.userId,
+        interestId: resp.data.interestId,
         createdAt: Date.parse(resp.data.createdAt)
     };
 }

@@ -5,7 +5,7 @@ import TextFieldForm from "../components/forms/TextFieldForm";
 import TextAreaForm from "../components/forms/TextAreaForm";
 import BadgeForm from "../components/forms/BadgeForm";
 import BadgeListForm from "../components/forms/BadgeListForm";
-import {UserResponse, api_get_user_me} from "../api"
+import {UserResponse, apiGetUserMe} from "../api"
 import {InfinitySpin} from "react-loader-spinner";
 
 type UserProp = {
@@ -28,9 +28,8 @@ const editProfile = (props: UserProp) => {
     })
 
     useEffect(() => {
-        api_get_user_me().then((res) => {
+        apiGetUserMe().then((res) => {
             setUserResponse(res)
-            console.log(res)
         })
     }, [])
 

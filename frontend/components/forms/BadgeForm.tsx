@@ -8,6 +8,7 @@ type UserProp = {
 
 const BadgeForm = (props: UserProp) => {
     return (
+        // TODO fix text contrast :)
         <div className="badge badge-info gap-2 mr-1" style={{
             borderColor: 'transparent',
             backgroundColor: '#'+crypto
