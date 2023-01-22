@@ -11,7 +11,13 @@ import {
     apiGetUserSkillMe,
     apiGetUserInterestMe,
     apiGetUserProjectMe,
-    UserSkillResponse, UserInterestResponse, ProjectResponse, apiPatchUserMe
+    UserSkillResponse,
+    UserInterestResponse,
+    ProjectResponse,
+    apiPatchUserMe,
+    SkillResponse,
+    InterestResponse,
+    apiGetSkillAll, apiGetInterestAll
 } from "../api"
 import {InfinitySpin} from "react-loader-spinner";
 import {list} from "postcss";
@@ -39,6 +45,14 @@ const editProfile = (props: UserProp) => {
         received: false,
         response: []
     })
+    const [skillResponse, setSkillResponse] = useState<Receipt<SkillResponse[]>>({
+        received: false,
+        response: []
+    })
+    const [interestResponse, setInterestResponse] = useState<Receipt<InterestResponse[]>>({
+        received: false,
+        response: []
+    })
 
     useEffect(() => {
         apiGetUserMe().then((res) => {
@@ -53,6 +67,12 @@ const editProfile = (props: UserProp) => {
         apiGetUserProjectMe().then((res) => {
             setUserProjectResponse({received: true, response: res})
         })
+        apiGetSkillAll().then((res) => {
+            setSkillResponse({received: true, response: res})
+        })
+        apiGetInterestAll().then((res) => {
+            setInterestResponse({received: true, response: res})
+        })
     }, [])
 
     return (
@@ -63,27 +83,53 @@ const editProfile = (props: UserProp) => {
             <div className="h-full w-[50%] border-base-content border-x-2">
                 <div className="text-3xl p-8 text-primary-content font-semibold">Edit Profile</div>
                 {userResponse.createdAt > 0 ? <div className='px-8 pb-8'>
-                    <TextFieldForm fieldName={"First name"} callFunction={(d: string) => {apiPatchUserMe({
-                        firstName: d,
-                    })}}
+                    <TextFieldForm fieldName={"First name"} callFunction={(d: string) => {
+                        apiPatchUserMe({
+                            firstName: d,
+                        })
+                    }}
                                    placeholder={userResponse.firstName}></TextFieldForm>
-                    <TextFieldForm fieldName={"Last name"} callFunction={(d: string) => {apiPatchUserMe({
-                        lastName: d,
-                    })}}
+                    <TextFieldForm fieldName={"Last name"} callFunction={(d: string) => {
+                        apiPatchUserMe({
+                            lastName: d,
+                        })
+                    }}
                                    placeholder={userResponse.lastName}></TextFieldForm>
-                    <TextAreaForm fieldName={"Bio"} callFunction={(d: string) => {apiPatchUserMe({
-                        bio: d,
-                    })}}
+                    <TextAreaForm fieldName={"Bio"} callFunction={(d: string) => {
+                        apiPatchUserMe({
+                            bio: d,
+                        })
+                    }}
                                   placeholder={userResponse.bio}></TextAreaForm>
                 </div> : <InfinitySpin width='200' color="#4fa94d"/>}
                 <div className='px-8 pb-8'>
-                    {userSkillResponse.received ?
-                        <BadgeListForm name="Skills" badges={userSkillResponse.response.map((x) => x.skillId.toString())}
-                                       buttonCaption="Add new skills"></BadgeListForm>
+                    {userSkillResponse.received && skillResponse.received ?
+                        <BadgeListForm name="Skills" badges={userSkillResponse.response.map((x) => {
+                            for (let i = 0; i < skillResponse.response.length; i++) {
+                                if (x.skillId === skillResponse.response[i].id) {
+                                    return {
+                                        id: skillResponse.response[i].id,
+                                        name: skillResponse.response[i].name,
+                                    }
+                                }
+                            }
+                        })} allBadges={skillResponse.response.map((x) => {
+                            return {id: x.id, name: x.name}
+                        })} buttonCaption="Add new skills"></BadgeListForm>
                         : <InfinitySpin width='200' color="#4fa94d"/>}
-                    {userInterestResponse.received ?
-                        <BadgeListForm name="Interests" badges={userInterestResponse.response.map((x) => x.interestId.toString())}
-                                       buttonCaption="Add new interests"></BadgeListForm>
+                    {userInterestResponse.received && interestResponse.received ?
+                        <BadgeListForm name="Interests" badges={userInterestResponse.response.map((x) => {
+                            for (let i = 0; i < interestResponse.response.length; i++) {
+                                if (x.interestId === interestResponse.response[i].id) {
+                                    return {
+                                        id: interestResponse.response[i].id,
+                                        name: interestResponse.response[i].name,
+                                    }
+                                }
+                            }
+                        })} allBadges={interestResponse.response.map((x) => {
+                            return {id: x.id, name: x.name}
+                        })} buttonCaption="Add new interests"></BadgeListForm>
                         : <InfinitySpin width='200' color="#4fa94d"/>}
                 </div>
 
